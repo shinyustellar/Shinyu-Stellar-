@@ -176,8 +176,8 @@
     .pay-icon { transition: all 0.3s ease; filter: saturate(0.7) brightness(0.85); }
     .pay-icon:hover { filter: saturate(1) brightness(1); transform: translateY(-2px); }
 
-    .form-input, .form-select, .form-textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 0.625rem; padding: 0.625rem 1rem; font-size: 0.875rem; color: #e7e5e4; transition: all 0.25s ease; outline: none; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; text-transform: capitalize; }
-    .form-input::placeholder, .form-textarea::placeholder { color: #78716c; text-transform: none; }
+    .form-input, .form-select, .form-textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 0.625rem; padding: 0.625rem 1rem; font-size: 0.875rem; color: #e7e5e4; transition: all 0.25s ease; outline: none; font-family: 'Inter', sans-serif; }
+    .form-input::placeholder, .form-textarea::placeholder { color: #78716c; }
     .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(184,160,138,0.06); }
     .form-input.field-error, .form-select.field-error, .form-textarea.field-error { border-color: var(--error-border) !important; background: var(--error-bg) !important; box-shadow: 0 0 0 3px var(--error-glow) !important; }
     .field-error-msg { display: none; color: #f87171; font-size: 11px; margin-top: 4px; padding-left: 2px; }
@@ -246,7 +246,7 @@
     .admin-status-select:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(184,160,138,0.06); }
     .admin-status-select option { background: #2C2926; color: #d6d3d1; }
     .admin-select-wrap { position: relative; flex-shrink: 0; }
-    .admin-select-wrap .select-arrow { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #78716c; font-size: 14px; }
+    .admin-select-wrap .select-arrow { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #a8a29e; font-size: 14px; }
     .admin-hint { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: rgba(184,160,138,0.06); border: 1px solid rgba(184,160,138,0.1); border-radius: 0.5rem; margin-bottom: 16px; }
     .status-changed-flash { animation: flashGreen 0.6s ease; }
     @keyframes flashGreen { 0%{background:rgba(74,222,128,0.15)} 100%{background:transparent} }
@@ -1229,41 +1229,22 @@
       icon.classList.add('spin');
       text.textContent = 'Sending...';
 
-      var emailHtml = `
-      <div style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; max-width: 600px; margin: 20px auto; border: 1px solid #e4e4e7; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-transform: capitalize;">
-        <div style="background: #231F1E; padding: 20px; text-align: center;">
-          <h2 style="color: #ffffff; margin: 0; font-size: 24px;">ShinyuStellar</h2>
-          <p style="color: #b8a08a; margin: 5px 0 0; letter-spacing: 1px; font-size: 12px;">New Inquiry</p>
-        </div>
-        <div style="background: #ffffff; padding: 30px; color: #44403c;">
-          <p style="margin: 0 0 15px;"><strong style="display: inline-block; width: 80px; color: #78716c;">Name:</strong> ${name.value.trim()}</p>
-          <p style="margin: 0 0 15px;"><strong style="display: inline-block; width: 80px; color: #78716c;">Email:</strong> ${email.value.trim()}</p>
-          ${track.value ? `<p style="margin: 0 0 15px;"><strong style="display: inline-block; width: 80px; color: #78716c;">Track:</strong> ${track.value}</p>` : ''}
-          <p style="margin: 0 0 15px;"><strong style="display: inline-block; width: 80px; color: #78716c;">Subject:</strong> ${subject.value}</p>
-          <hr style="border: 0; border-top: 1px solid #f4f4f5; margin: 20px 0;">
-          <p style="margin: 0 0 10px;"><strong style="color: #78716c;">Message:</strong></p>
-          <p style="margin: 0; line-height: 1.6;">${message.value.trim().replace(/\n/g, '<br>')}</p>
-        </div>
-        <div style="background: #f9fafb; padding: 15px 30px; text-align: center;">
-          <p style="margin: 0; color: #a8a29e; font-size: 11px;">This message was sent from your website contact form.</p>
-        </div>
-      </div>
-      `;
-
-      var params = new URLSearchParams();
-      params.append('Name', name.value.trim());
-      params.append('Email', email.value.trim());
-      params.append('_replyto', email.value.trim());
-      params.append('Subject', subject.value + (track.value ? " (Track: " + track.value + ")" : ""));
-      params.append('Track', track.value);
-      params.append('Message', emailHtml);
-      params.append('_subject', "New Inquiry: " + subject.value);
-      params.append('_captcha', 'false');
+      var formData = {
+        name: name.value.trim(),
+        email: email.value.trim(), // This acts as the sender's email for Reply-To
+        _replyto: email.value.trim(),
+        subject: subject.value + (track.value ? " (Track: " + track.value + ")" : ""),
+        track: track.value,
+        message: message.value.trim(),
+        _template: "table",
+        _subject: "New Inquiry: " + subject.value,
+        _captcha: "false"
+      };
 
       fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
         method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: params
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(formData)
       })
       .then(function(response) { return response.json(); })
       .then(function(data) {
