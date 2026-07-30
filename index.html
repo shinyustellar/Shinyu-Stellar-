@@ -1200,8 +1200,7 @@
       document.getElementById('clearTrackBtn').classList.remove('visible');
     }
 
-    // EMAIL SOLUTION: FormSubmit.co sends the form directly to your Gmail inbox
-    // _replyto is explicitly passed so you can hit "Reply" in Gmail and it goes to the sender
+    // EMAIL SOLUTION: Custom formatted email so it looks beautiful in your inbox
     document.getElementById('contactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       var name = document.getElementById('formName');
@@ -1230,15 +1229,24 @@
       icon.classList.add('spin');
       text.textContent = 'Sending...';
 
+      // Constructing a beautiful plain text message for the email
+      var emailContent = "You have received a new inquiry from your website.\n\n" +
+                         "Name: " + name.value.trim() + "\n" +
+                         "Email: " + email.value.trim() + "\n";
+      if (track.value) {
+        emailContent += "Track of Interest: " + track.value + "\n";
+      }
+      emailContent += "Subject: " + subject.value + "\n\n" +
+                      "Message:\n" + message.value.trim();
+
       var formData = {
         name: name.value.trim(),
         email: email.value.trim(), // This acts as the sender's email for Reply-To
         _replyto: email.value.trim(),
-        subject: subject.value + (track.value ? " (Track: " + track.value + ")" : ""),
-        track: track.value,
-        message: message.value.trim(),
-        _template: "table",
-        _subject: "New Inquiry: " + subject.value
+        message: emailContent, // Send the custom formatted string as the message
+        _subject: "New Inquiry: " + subject.value + (track.value ? " (" + track.value + ")" : ""),
+        _template: "box", // "box" template looks much cleaner than "table"
+        _captcha: "false"
       };
 
       fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
@@ -1260,7 +1268,7 @@
         showToast('Could not send message. Try again.', 'error');
       })
       .finally(function() {
-        // Reset button state completely
+        // Reset button state completely so it NEVER gets stuck loading
         btn.disabled = false;
         icon.setAttribute('data-icon', 'mdi:send-variant-outline');
         icon.classList.remove('spin');
