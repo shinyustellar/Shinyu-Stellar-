@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShinyuStellar — AI Generated Instrumental Music</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- SPEED OPTIMIZATION: Preconnect to GitHub to load photos instantly -->
+  <link rel="preconnect" href="https://raw.githubusercontent.com">
+  <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+    }
+  </script>
+  <style>
+    * { scroll-behavior: smooth; }
+    /* Rich dark warm grey background instead of pure black */
+    body { font-family: 'Inter', sans-serif; background: #231F1E; color: #f5f5f4; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #231F1E; }
+    ::-webkit-scrollbar-thumb { background: #44403c; border-radius: 3px; }
+
+    :root {
+      --accent: #b8a08a;
+      --accent-light: #d1c0ad;
+      --accent-dark: #8c7a68;
+      --accent-glow: rgba(184,160,138,0.15);
+      --accent-glow-strong: rgba(184,160,138,0.25);
+      --input-bg: #2C2926;
+      --input-border: rgba(255,255,255,0.08);
+      --input-focus: rgba(184,160,138,0.3);
+      --error-border: rgba(248,113,113,0.4);
+      --error-bg: rgba(248,113,113,0.06);
+      --error-glow: rgba(248,113,113,0.08);
+    }
+
+    @keyframes slideUpFade { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes scaleReveal { from{opacity:0;transform:scale(1.06)} to{opacity:1;transform:scale(1)} }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes breathe { 0%,100%{opacity:.25;transform:scale(1)} 50%{opacity:.45;transform:scale(1.1)} }
+    @keyframes fadeOut { to{opacity:0;transform:translateY(-10px)} }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-4px)} 40%{transform:translateX(4px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
+    @keyframes bellRing { 0%{transform:rotate(0)} 10%{transform:rotate(15deg)} 20%{transform:rotate(-15deg)} 30%{transform:rotate(10deg)} 40%{transform:rotate(-10deg)} 50%{transform:rotate(5deg)} 60%{transform:rotate(-5deg)} 70%{transform:rotate(0)} }
+    @keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
+    @keyframes equalizer1 { 0%,100%{height:4px} 50%{height:16px} }
+    @keyframes equalizer2 { 0%,100%{height:8px} 50%{height:20px} }
+    @keyframes equalizer3 { 0%,100%{height:12px} 50%{height:8px} }
+
+    .animate-up { animation: slideUpFade 1s cubic-bezier(0.16,1,0.3,1) forwards; opacity:0; }
+    .animate-scale { animation: scaleReveal 1.5s cubic-bezier(0.16,1,0.3,1) forwards; opacity:0; }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-breathe { animation: breathe 10s ease-in-out infinite; }
+    .shake { animation: shake 0.4s ease; }
+    .bell-ring { animation: bellRing 0.8s ease; }
+    .slide-down { animation: slideDown 0.3s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .spin { animation: spin 1s linear infinite; }
+
+    .delay-100{animation-delay:100ms} .delay-200{animation-delay:200ms} .delay-300{animation-delay:300ms}
+    .delay-500{animation-delay:500ms} .delay-700{animation-delay:700ms}
+
+    .card-hover { 
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), box-shadow 0.5s cubic-bezier(0.4,0,0.2,1); 
+      will-change: transform;
+    }
+    .card-hover:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 20px 50px -15px rgba(0,0,0,0.6); 
+    }
+
+    .btn-primary { background: var(--accent-dark); box-shadow: 0 0 20px var(--accent-glow); transition: all 0.3s ease; }
+    .btn-primary:hover { background: var(--accent); box-shadow: 0 0 30px var(--accent-glow-strong); transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: 0.6; pointer-events: none; }
+
+    .btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s ease; }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.03); }
+
+    .filter-btn { transition: all 0.3s ease; border: 1px solid transparent; }
+    .filter-btn.active { background: rgba(184,160,138,0.12); border-color: rgba(184,160,138,0.25); color: var(--accent-light) !important; font-weight: 500; }
+
+    .music-card { 
+      position: relative; 
+      display: flex;
+      flex-direction: column;
+    }
+    .music-card-image-wrap {
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #1f1c1b; 
+    }
+    .music-card-image-wrap img { 
+      transition: transform 0.7s cubic-bezier(0.4,0,0.2,1); 
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .music-card:hover .music-card-image-wrap img { transform: scale(1.06); }
+    .play-overlay { 
+      position: absolute; 
+      inset: 0; 
+      background: rgba(0,0,0,0.5); 
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s ease;
+      z-index: 2;
+    }
+    .music-card:hover .play-overlay { opacity: 1; }
+    .play-btn { 
+      width: 56px; height: 56px; 
+      background: rgba(184,160,138,0.9); 
+      border-radius: 50%; 
+      display: flex; align-items: center; justify-content: center;
+      transform: scale(0.8); transition: transform 0.3s ease;
+    }
+    .music-card:hover .play-btn { transform: scale(1); }
+
+    .equalizer { display: flex; align-items: flex-end; gap: 3px; height: 24px; }
+    .equalizer-bar { width: 4px; background: var(--accent); border-radius: 2px; }
+    .equalizer-bar:nth-child(1) { animation: equalizer1 0.8s ease-in-out infinite; }
+    .equalizer-bar:nth-child(2) { animation: equalizer2 0.6s ease-in-out infinite 0.2s; }
+    .equalizer-bar:nth-child(3) { animation: equalizer3 0.7s ease-in-out infinite 0.1s; }
+
+    .modal-overlay { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px); }
+
+    .sep { height: 1px; background: linear-gradient(90deg, transparent, rgba(184,160,138,0.15), transparent); }
+    .toast { animation: slideUpFade 0.5s ease forwards, fadeOut 0.5s ease 2.5s forwards; }
+
+    .tag { background: rgba(184,160,138,0.06); border: 1px solid rgba(184,160,138,0.12); color: var(--accent); }
+
+    .price-badge { background: rgba(184,160,138,0.1); border: 1px solid rgba(184,160,138,0.18); color: var(--accent-light); }
+
+    .status-avail { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); color: #4ade80; }
+    .status-sold { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.2); color: #f87171; }
+    .status-reserved { background: rgba(250,204,21,0.08); border: 1px solid rgba(250,204,21,0.2); color: #facc15; }
+    .status-exclusive { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); color: #8b5cf6; }
+
+    .detail-box { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s; }
+    .detail-box:hover { border-color: rgba(184,160,138,0.15); }
+
+    .popular-card { border: 1px solid rgba(184,160,138,0.2); background: linear-gradient(180deg, rgba(184,160,138,0.04) 0%, rgba(184,160,138,0.01) 100%); }
+
+    /* Navbar Base (Light Text over Bright Hero) */
+    .logo-text { color: #f5f5f4; transition: color 0.3s; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+    .group:hover .logo-text { color: #d6d3d1; }
+    .nav-link { position: relative; color: #f5f5f4; transition: color 0.3s; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+    .nav-link:hover { color: #d6d3d1; }
+    .nav-link::after { content: ''; position: absolute; bottom: -4px; left: 50%; width: 0; height: 1px; background: #d6d3d1; border-radius: 1px; transition: all 0.3s; transform: translateX(-50%); }
+    .nav-link:hover::after { width: 100%; }
+    .bell-icon { color: #f5f5f4; transition: color 0.3s; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+    .notification-badge { position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px; background: #f87171; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: white; box-shadow: 0 0 0 2px rgba(35,31,30,0.9); padding: 0 3px; }
+    .mobile-menu-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
+    .mobile-menu-btn:hover { background: rgba(255,255,255,0.2); }
+    .mobile-menu-btn .iconify { color: #f5f5f4; }
+
+    /* Navbar Scrolled (Dark Background, Light Text) */
+    #navbar.nav-scrolled { background: rgba(35, 31, 30, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.04); }
+    #navbar.nav-scrolled .logo-text { color: #d6d3d1; text-shadow: none; }
+    #navbar.nav-scrolled .group:hover .logo-text { color: #f5f5f4; }
+    #navbar.nav-scrolled .nav-link { color: #a8a29e; text-shadow: none; }
+    #navbar.nav-scrolled .nav-link:hover { color: #f5f5f4; }
+    #navbar.nav-scrolled .nav-link::after { background: #f5f5f4; }
+    #navbar.nav-scrolled .bell-icon { color: #a8a29e; text-shadow: none; }
+    #navbar.nav-scrolled .notification-badge { box-shadow: 0 0 0 2px #231F1E; }
+    #navbar.nav-scrolled .mobile-menu-btn { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+    #navbar.nav-scrolled .mobile-menu-btn:hover { background: rgba(255,255,255,0.07); }
+    #navbar.nav-scrolled .mobile-menu-btn .iconify { color: #a8a29e; }
+
+    .pay-icon { transition: all 0.3s ease; filter: saturate(0.7) brightness(0.85); }
+    .pay-icon:hover { filter: saturate(1) brightness(1); transform: translateY(-2px); }
+
+    .form-input, .form-select, .form-textarea { width: 100%; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 0.625rem; padding: 0.625rem 1rem; font-size: 0.875rem; color: #e7e5e4; transition: all 0.25s ease; outline: none; font-family: 'Inter', sans-serif; }
+    .form-input::placeholder, .form-textarea::placeholder { color: #78716c; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(184,160,138,0.06); }
+    .form-input.field-error, .form-select.field-error, .form-textarea.field-error { border-color: var(--error-border) !important; background: var(--error-bg) !important; box-shadow: 0 0 0 3px var(--error-glow) !important; }
+    .field-error-msg { display: none; color: #f87171; font-size: 11px; margin-top: 4px; padding-left: 2px; }
+    .field-error-msg.visible { display: block; }
+
+    .select-wrap { position: relative; }
+    .select-wrap .select-arrow { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #a8a29e; font-size: 16px; transition: color 0.25s; }
+    .select-wrap:focus-within .select-arrow { color: var(--accent); }
+
+    .form-select { appearance: none; -webkit-appearance: none; -moz-appearance: none; cursor: pointer; padding-right: 2.5rem; }
+    .form-select option { background: #2C2926; color: #d6d3d1; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.875rem; }
+    .form-select option:hover, .form-select option:checked, .form-select option:focus { background: #44403c; color: #f5f5f4; }
+    .form-select option[value=""] { color: #78716c; }
+
+    .sort-select { background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 0.5rem; padding: 0.5rem 2.25rem 0.5rem 0.75rem; font-size: 0.75rem; color: #d6d3d1; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.25s ease; }
+    .sort-select:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(184,160,138,0.06); }
+    .sort-select option { background: #2C2926; color: #d6d3d1; padding: 8px 10px; font-size: 0.75rem; }
+    .sort-select option:hover, .sort-select option:checked { background: #44403c; color: #f5f5f4; }
+
+    .form-textarea { resize: none; }
+
+    .clear-select-btn { position: absolute; right: 36px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; opacity: 0; pointer-events: none; }
+    .clear-select-btn.visible { opacity: 1; pointer-events: auto; }
+    .clear-select-btn:hover { background: rgba(248,113,113,0.15); border-color: rgba(248,113,113,0.3); }
+    .clear-select-btn:hover .iconify { color: #f87171; }
+    .clear-select-btn .iconify { color: #a8a29e; font-size: 12px; transition: color 0.2s; }
+
+    .selected-pill { display: none; align-items: center; gap: 6px; background: rgba(184,160,138,0.08); border: 1px solid rgba(184,160,138,0.15); border-radius: 9999px; padding: 4px 10px 4px 12px; margin-top: 6px; font-size: 11px; color: var(--accent-light); animation: slideUpFade 0.3s ease forwards; }
+    .selected-pill.visible { display: inline-flex; }
+    .selected-pill .pill-remove { width: 16px; height: 16px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+    .selected-pill .pill-remove:hover { background: rgba(248,113,113,0.15); border-color: rgba(248,113,113,0.3); }
+    .selected-pill .pill-remove:hover .iconify { color: #f87171; }
+    .selected-pill .pill-remove .iconify { color: #a8a29e; font-size: 10px; transition: color 0.2s; }
+
+    .faq-item { transition: border-color 0.3s; }
+    .faq-item:hover { border-color: rgba(184,160,138,0.12); }
+
+    .notification-bell { position: relative; cursor: pointer; transition: all 0.3s ease; }
+    .notification-bell:hover { color: #d6d3d1; }
+    .notification-dropdown { position: absolute; top: calc(100% + 12px); right: -20px; width: 340px; background: #2C2926; border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; box-shadow: 0 20px 50px -15px rgba(0,0,0,0.8); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s cubic-bezier(0.16,1,0.3,1); z-index: 100; overflow: hidden; }
+    .notification-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .notification-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+    .notification-list { max-height: 320px; overflow-y: auto; }
+    .notification-list::-webkit-scrollbar { width: 3px; }
+    .notification-list::-webkit-scrollbar-thumb { background: #44403c; border-radius: 2px; }
+    .notification-item { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.2s; cursor: pointer; }
+    .notification-item:hover { background: rgba(255,255,255,0.03); }
+    .notification-item:last-child { border-bottom: none; }
+    .notification-item.unread { background: rgba(184,160,138,0.04); }
+    .notification-item.unread:hover { background: rgba(184,160,138,0.08); }
+    .notification-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .notification-footer { padding: 10px 16px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; }
+
+    .admin-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; padding: 20px; }
+    .admin-overlay.active { display: flex; }
+    .admin-panel { width: 100%; max-width: 900px; max-height: 85vh; background: #2C2926; border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; overflow: hidden; display: flex; flex-direction: column; }
+    .admin-header { padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .admin-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+    .admin-body::-webkit-scrollbar { width: 4px; }
+    .admin-body::-webkit-scrollbar-thumb { background: #44403c; border-radius: 2px; }
+    .admin-music-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); flex-wrap: wrap; }
+    .admin-music-row:last-child { border-bottom: none; }
+    .admin-music-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #1f1c1b; }
+    .admin-music-info { flex: 1; min-width: 150px; }
+    .admin-status-select { appearance: none; -webkit-appearance: none; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 0.5rem; padding: 8px 32px 8px 12px; font-size: 13px; color: #e7e5e4; outline: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.25s ease; min-width: 140px; }
+    .admin-status-select:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(184,160,138,0.06); }
+    .admin-status-select option { background: #2C2926; color: #d6d3d1; }
+    .admin-select-wrap { position: relative; flex-shrink: 0; }
+    .admin-select-wrap .select-arrow { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #a8a29e; font-size: 14px; }
+    .admin-hint { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: rgba(184,160,138,0.06); border: 1px solid rgba(184,160,138,0.1); border-radius: 0.5rem; margin-bottom: 16px; }
+    .status-changed-flash { animation: flashGreen 0.6s ease; }
+    @keyframes flashGreen { 0%{background:rgba(74,222,128,0.15)} 100%{background:transparent} }
+
+    .admin-action-btns { display: flex; gap: 8px; flex-shrink: 0; }
+    .admin-action-btn { width: 34px; height: 34px; border-radius: 0.5rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; color: #a8a29e; }
+    .admin-action-btn:hover { background: rgba(255,255,255,0.08); color: #d6d3d1; }
+    .admin-action-btn.danger:hover { background: rgba(248,113,113,0.15); border-color: rgba(248,113,113,0.3); color: #f87171; }
+    .admin-action-btn .iconify { font-size: 16px; }
+
+    .modal-close-btn { position: absolute; top: 16px; right: 16px; z-index: 20; width: 44px; height: 44px; border-radius: 50%; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+    .modal-close-btn:hover { background: rgba(0,0,0,0.8); border-color: rgba(255,255,255,0.25); transform: scale(1.1); }
+  </style>
+</head>
+<body class="overflow-x-hidden" oncontextmenu="return false">
+
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full blur-3xl animate-breathe" style="background:radial-gradient(circle,rgba(184,160,138,0.05) 0%,transparent 70%)"></div>
+    <div class="absolute top-1/2 -right-52 w-96 h-96 rounded-full blur-3xl animate-breathe" style="background:radial-gradient(circle,rgba(140,122,104,0.04) 0%,transparent 70%);animation-delay:5s"></div>
+    <div class="absolute bottom-0 left-1/3 w-80 h-80 rounded-full blur-3xl animate-breathe" style="background:radial-gradient(circle,rgba(184,160,138,0.03) 0%,transparent 70%);animation-delay:2.5s"></div>
+  </div>
+
+  <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#5a4e42,#3a3228)"><span class="iconify text-white/80 text-base" data-icon="mdi:waveform"></span></div>
+        <span class="text-base font-medium tracking-tight logo-text transition-colors">ShinyuStellar</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#home" class="nav-link text-sm">Home</a>
+        <a href="#catalog" class="nav-link text-sm">Catalog</a>
+        <a href="#about" class="nav-link text-sm">About</a>
+        <a href="#licensing" class="nav-link text-sm">Licensing</a>
+        <a href="#faq" class="nav-link text-sm">FAQ</a>
+        <div class="notification-bell" id="notificationBell" onclick="toggleNotifications()">
+          <span class="iconify text-xl bell-icon" data-icon="mdi:bell-outline" id="bellIcon"></span>
+          <span class="notification-badge" id="notificationBadge">3</span>
+          <div class="notification-dropdown" id="notificationDropdown">
+            <div class="notification-header">
+              <span class="text-sm font-medium text-stone-200">Notifications</span>
+              <button class="text-[11px] text-stone-400 hover:text-stone-200 transition-colors" onclick="markAllAsRead(event)">Mark all as read</button>
+            </div>
+            <div class="notification-list" id="notificationList"></div>
+            <div class="notification-footer"><span class="text-[11px] text-stone-500">Click a notification to dismiss it</span></div>
+          </div>
+        </div>
+        <a href="#contact" class="btn-primary text-sm font-medium text-white px-5 py-2 rounded-lg">Contact</a>
+      </div>
+      <button id="mobileMenuBtn" class="md:hidden w-9 h-9 rounded-lg mobile-menu-btn flex items-center justify-center transition-colors">
+        <span class="iconify text-lg" data-icon="mdi:menu" id="menuIcon"></span>
+      </button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-stone-900/95 backdrop-blur-xl border-t border-white/[0.04]">
+      <div class="px-6 py-6 flex flex-col gap-4">
+        <a href="#home" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">Home</a>
+        <a href="#catalog" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">Catalog</a>
+        <a href="#about" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">About</a>
+        <a href="#licensing" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">Licensing</a>
+        <a href="#faq" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">FAQ</a>
+        <div class="flex items-center gap-3 py-2 cursor-pointer" onclick="toggleMobileNotifications()">
+          <div class="notification-bell relative">
+            <span class="iconify text-lg text-stone-400" data-icon="mdi:bell-outline" id="mobileBellIcon"></span>
+            <span class="notification-badge" id="mobileNotificationBadge">3</span>
+          </div>
+          <span class="text-stone-400 text-sm">Notifications</span>
+        </div>
+        <div class="notification-dropdown hidden" id="mobileNotificationDropdown" style="position:static;width:100%;box-shadow:none;margin-top:8px;opacity:1;visibility:visible;transform:none;">
+          <div class="notification-header">
+            <span class="text-sm font-medium text-stone-200">Notifications</span>
+            <button class="text-[11px] text-stone-400 hover:text-stone-200 transition-colors" onclick="markAllAsRead(event, true)">Mark all as read</button>
+          </div>
+          <div class="notification-list" id="mobileNotificationList"></div>
+          <div class="notification-footer"><span class="text-[11px] text-stone-500">Click a notification to dismiss it</span></div>
+        </div>
+        <a href="#contact" class="btn-primary text-center text-sm font-medium text-white px-5 py-3 rounded-lg mt-2" onclick="closeMobileMenu()">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="admin-overlay" id="adminOverlay">
+    <div class="admin-panel slide-down">
+      <div class="admin-header">
+        <div>
+          <h3 class="text-lg font-semibold text-stone-200 flex items-center gap-2">
+            <span class="iconify text-lg" style="color:var(--accent)" data-icon="mdi:shield-crown-outline"></span>
+            Manage Tracks
+          </h3>
+          <p class="text-[11px] text-stone-500 mt-0.5">Edit details, update status, or add new tracks below</p>
+        </div>
+        <button onclick="closeAdmin()" class="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.07] transition-colors">
+          <span class="iconify text-lg text-stone-400" data-icon="mdi:close"></span>
+        </button>
+      </div>
+      <div class="admin-body" id="adminBody">
+        <div class="admin-hint">
+          <span class="iconify text-base" style="color:var(--accent)" data-icon="mdi:information-outline"></span>
+          <p class="text-xs text-stone-400">Select a new status for any track. Changes take effect immediately and a notification is auto-created.</p>
+        </div>
+        <div class="flex justify-end mb-4">
+          <button onclick="openEditModal()" class="btn-primary text-xs font-medium text-white px-4 py-2 rounded-lg flex items-center gap-2">
+            <span class="iconify" data-icon="mdi:plus"></span> Add New Track
+          </button>
+        </div>
+        <div id="adminMusicList"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-overlay" id="editTrackModal" style="z-index: 310;">
+    <div class="admin-panel slide-down" style="max-width: 650px;">
+      <div class="admin-header">
+        <div>
+          <h3 class="text-lg font-semibold text-stone-200 flex items-center gap-2">
+            <span class="iconify text-lg" style="color:var(--accent)" data-icon="mdi:pencil-outline"></span>
+            <span id="editModalTitle">Edit Track</span>
+          </h3>
+          <p class="text-[11px] text-stone-500 mt-0.5">Update track details below. Changes apply instantly.</p>
+        </div>
+        <button onclick="closeEditModal()" class="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.07] transition-colors">
+          <span class="iconify text-lg text-stone-400" data-icon="mdi:close"></span>
+        </button>
+      </div>
+      <div class="admin-body">
+        <form id="editTrackForm" onsubmit="saveTrack(event)">
+          <input type="hidden" id="editTrackId">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="md:col-span-2">
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Title</label>
+              <input type="text" id="editTitle" class="form-input mt-1.5" required>
+            </div>
+            <div>
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Genre</label>
+              <input type="text" id="editGenre" class="form-input mt-1.5" required>
+            </div>
+            <div>
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Price ($)</label>
+              <input type="number" id="editPrice" class="form-input mt-1.5" required>
+            </div>
+            <div>
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Status</label>
+              <div class="select-wrap mt-1.5">
+                <select id="editStatus" class="form-select">
+                  <option value="available">Available</option>
+                  <option value="licensed">Licensed</option>
+                  <option value="exclusive">Exclusive</option>
+                  <option value="reserved">Reserved</option>
+                </select>
+                <span class="select-arrow iconify" data-icon="mdi:chevron-down"></span>
+              </div>
+            </div>
+            <div>
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Duration (e.g. 3:42)</label>
+              <input type="text" id="editDuration" class="form-input mt-1.5" required>
+            </div>
+            <div>
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">BPM</label>
+              <input type="number" id="editBpm" class="form-input mt-1.5" required>
+            </div>
+            <div>
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Musical Key</label>
+              <input type="text" id="editKey" class="form-input mt-1.5" required>
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Image URL</label>
+              <input type="url" id="editImage" class="form-input mt-1.5" required>
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Preview Audio URL</label>
+              <input type="url" id="editPreviewUrl" class="form-input mt-1.5" required>
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Tags (comma separated)</label>
+              <input type="text" id="editTags" class="form-input mt-1.5">
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Description</label>
+              <textarea id="editDescription" rows="3" class="form-textarea mt-1.5" required></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary w-full text-sm font-medium text-white px-5 py-3 rounded-lg flex items-center justify-center gap-2 mt-6">
+            <span class="iconify" data-icon="mdi:content-save-outline"></span> Save Changes
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Intro/Hero Section with Calm Scenery Wallpaper & High Contrast Text -->
+  <section id="home" class="relative min-h-screen flex items-center justify-center px-6 pt-20">
+    <div class="absolute inset-0 z-0">
+      <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1920&auto=format&fit=crop" alt="" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-b from-[#231F1E]/90 via-[#231F1E]/50 to-[#231F1E]"></div>
+    </div>
+    <div class="relative z-10 text-center max-w-4xl mx-auto">
+      <div class="animate-up">
+        <span class="inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.2em] uppercase text-stone-200 px-4 py-2 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+          New Tracks Added Weekly
+        </span>
+      </div>
+      <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tighter animate-up delay-100 drop-shadow-[0_2px_15px_rgba(0,0,0,0.8)]">
+        <span class="text-white">AI Generated</span><br>
+        <span class="text-stone-200">Instrumentals</span>
+      </h1>
+      <p class="text-lg md:text-xl font-light text-stone-200 leading-relaxed mt-8 max-w-2xl mx-auto animate-up delay-300 drop-shadow-md">
+        Original compositions crafted by AI, refined by human taste. Each track is <span class="text-white font-semibold">ready to license</span> — for videos, podcasts, games, and more.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-up delay-500">
+        <a href="#catalog" class="btn-primary text-sm font-medium text-white px-7 py-3 rounded-lg flex items-center gap-2 shadow-lg"><span class="iconify" data-icon="mdi:music-note"></span> Browse Catalog</a>
+        <a href="#contact" class="bg-white/10 backdrop-blur-sm text-sm font-medium text-white px-7 py-3 rounded-lg flex items-center gap-2 border border-white/20 hover:bg-white/20 transition-all duration-300"><span class="iconify" data-icon="mdi:message-outline"></span> Custom Request</a>
+      </div>
+      <div class="flex items-center justify-center gap-8 mt-14 animate-up delay-700">
+        <div class="text-center"><p class="text-2xl font-bold text-white" id="statTotal">0</p><p class="text-[11px] text-stone-300 uppercase tracking-wider mt-1">Tracks</p></div>
+        <div class="w-px h-10 bg-white/20"></div>
+        <div class="text-center"><p class="text-2xl font-bold text-white" id="statSold">0</p><p class="text-[11px] text-stone-300 uppercase tracking-wider mt-1">Licensed</p></div>
+        <div class="w-px h-10 bg-white/20"></div>
+        <div class="text-center"><p class="text-2xl font-bold text-white" id="statCategories">0</p><p class="text-[11px] text-stone-300 uppercase tracking-wider mt-1">Genres</p></div>
+      </div>
+    </div>
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
+      <a href="#catalog" class="text-stone-200 hover:text-white transition-colors"><span class="iconify text-xl" data-icon="mdi:chevron-double-down"></span></a>
+    </div>
+  </section>
+
+  <section id="catalog" class="relative z-10 px-6 py-24">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-14">
+        <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">Collection</span>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">Music Catalog</h2>
+        <p class="text-stone-400 font-light mt-3 max-w-md mx-auto text-sm">Click any track to hear a preview, see details, and licensing options.</p>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-2 mb-10" id="filterContainer">
+        <button class="filter-btn active text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="all">All</button>
+        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="refreshing">Refreshing</button>
+        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="ambient">Ambient</button>
+        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="electronic">Electronic</button>
+        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="orchestral">Orchestral</button>
+        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="lofi">Lo-Fi</button>
+        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="cinematic">Cinematic</button>
+        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="jazz">Jazz</button>
+      </div>
+      <div class="flex items-center justify-between mb-8">
+        <p class="text-xs text-stone-500" id="trackCount">Showing 0 tracks</p>
+        <div class="select-wrap">
+          <select id="sortSelect" class="sort-select">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="price-low">Price ↑</option>
+            <option value="price-high">Price ↓</option>
+            <option value="duration-short">Duration ↑</option>
+            <option value="duration-long">Duration ↓</option>
+          </select>
+          <span class="select-arrow iconify" data-icon="mdi:chevron-down"></span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="musicGrid"></div>
+      <div id="emptyState" class="hidden text-center py-20">
+        <span class="iconify text-4xl text-stone-700 mx-auto" data-icon="mdi:music-off-outline"></span>
+        <p class="text-stone-500 mt-3 text-sm">No tracks in this genre.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep max-w-3xl mx-auto"></div>
+
+  <section id="about" class="relative z-10 px-6 py-24">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-12 gap-12 items-center">
+      <div class="md:col-span-5">
+        <div class="relative rounded-2xl overflow-hidden aspect-[3/4]">
+          <img src="https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/Original%20Character%20(%20OC%20)%20References.jpg" alt="Creator" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#231F1E] via-transparent to-transparent"></div>
+          <div class="absolute bottom-5 left-5">
+            <p class="text-[10px] font-medium tracking-widest uppercase text-stone-400">The Creator</p>
+            <p class="text-lg font-semibold text-stone-200 mt-0.5">ShinyuStellar</p>
+          </div>
+        </div>
+      </div>
+      <div class="md:col-span-7">
+        <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">About</span>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">The Sound Behind<br>Each Track</h2>
+        <p class="text-stone-400 font-light leading-relaxed mt-6 text-[15px]">I'm a producer who found a new creative partner in AI. Every track here started as a prompt — maybe a mood, maybe a genre blend, maybe a random thought at 3AM. The AI generates, I curate and refine.</p>
+        <p class="text-stone-400 font-light leading-relaxed mt-4 text-[15px]">I work with multiple AI music models but always apply human taste to the final selection. Each track is mixed and mastered for professional use. Nothing here is generic or repetitive.</p>
+        <div class="grid grid-cols-2 gap-3 mt-10">
+          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-500" data-icon="mdi:waveform"></span><p class="text-sm font-medium text-stone-200 mt-2.5">High Quality</p><p class="text-xs text-stone-500 mt-0.5">WAV + MP3 files</p></div>
+          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-500" data-icon="mdi:shield-check-outline"></span><p class="text-sm font-medium text-stone-200 mt-2.5">Clear License</p><p class="text-xs text-stone-500 mt-0.5">No copyright claims</p></div>
+          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-500" data-icon="mdi:clock-fast"></span><p class="text-sm font-medium text-stone-200 mt-2.5">Instant Delivery</p><p class="text-xs text-stone-500 mt-0.5">Download immediately</p></div>
+          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-500" data-icon="mdi:tune-variant"></span><p class="text-sm font-medium text-stone-200 mt-2.5">Custom Edits</p><p class="text-xs text-stone-500 mt-0.5">Adjustments available</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep max-w-3xl mx-auto"></div>
+
+  <section id="licensing" class="relative z-10 px-6 py-24">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-14">
+        <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">Licensing</span>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">How It Works</h2>
+        <p class="text-stone-400 font-light mt-3 max-w-md mx-auto text-sm">Simple licensing. No hidden fees.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5 items-stretch">
+        <div class="card-hover p-7 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex flex-col">
+          <span class="iconify text-2xl text-stone-500" data-icon="mdi:play-circle-outline"></span>
+          <h3 class="text-lg font-semibold text-stone-200 mt-4">Personal Use</h3>
+          <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">For personal projects, non-monetized content.</p>
+          <div class="my-5"><span class="text-2xl font-bold text-stone-200">$10</span></div>
+          <ul class="space-y-2.5 mb-7 flex-1">
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>MP3 + WAV files</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>44.1kHz / 16-bit</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Personal projects only</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Instant download</li>
+          </ul>
+          <a href="#contact" class="btn-ghost block text-center text-xs font-medium text-stone-300 px-5 py-2.5 rounded-lg">Inquire</a>
+        </div>
+        <div class="card-hover popular-card p-7 rounded-2xl flex flex-col relative">
+          <div class="flex items-center justify-between">
+            <span class="iconify text-2xl" style="color:var(--accent)" data-icon="mdi:license"></span>
+            <span class="text-[9px] font-semibold tracking-widest uppercase px-2.5 py-0.5 rounded-full" style="color:var(--accent);background:var(--accent-glow);border:1px solid rgba(184,160,138,0.2)">Popular</span>
+          </div>
+          <h3 class="text-lg font-semibold text-stone-200 mt-4">Commercial License</h3>
+          <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">For monetized content, business use.</p>
+          <div class="my-5"><span class="text-2xl font-bold" style="color:var(--accent-light)">$20</span></div>
+          <ul class="space-y-2.5 mb-7 flex-1">
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>Everything in Personal</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>48kHz / 24-bit</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>YouTube, social media</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>Podcasts, streams</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>License certificate</li>
+          </ul>
+          <a href="#contact" class="btn-primary block text-center text-xs font-medium text-white px-5 py-2.5 rounded-lg">Inquire</a>
+        </div>
+        <div class="card-hover p-7 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex flex-col">
+          <span class="iconify text-2xl text-stone-500" data-icon="mdi:crown-outline"></span>
+          <h3 class="text-lg font-semibold text-stone-200 mt-4">Exclusive Rights</h3>
+          <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">Full ownership, track removed from catalog.</p>
+          <div class="my-5"><span class="text-2xl font-bold text-stone-200">$50</span><span class="text-xs text-stone-500 ml-1">starting</span></div>
+          <ul class="space-y-2.5 mb-7 flex-1">
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Everything in Commercial</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Full ownership</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Stems included</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Custom edits</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Track removed from sale</li>
+          </ul>
+          <a href="#contact" class="btn-ghost block text-center text-xs font-medium text-stone-300 px-5 py-2.5 rounded-lg">Request</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sep max-w-3xl mx-auto"></div>
+
+  <section id="faq" class="relative z-10 px-6 py-24">
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-14">
+        <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">FAQ</span>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">Questions</h2>
+      </div>
+      <div class="space-y-2.5" id="faqContainer"></div>
+    </div>
+  </section>
+
+  <div class="sep max-w-3xl mx-auto"></div>
+
+  <section id="contact" class="relative z-10 px-6 py-24">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
+      <div>
+        <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">Get in Touch</span>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">Need a Track?<br>Let's Talk.</h2>
+        <p class="text-stone-400 font-light leading-relaxed mt-6 text-[15px]">Whether you need a specific mood, genre, or length — I can create it. Fill out the form or reach out directly on my socials. I'll get back to you within 24 hours.</p>
+        <div class="space-y-4 mt-10">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl detail-box flex items-center justify-center flex-shrink-0"><span class="iconify text-lg text-stone-400" data-icon="mdi:email-outline"></span></div>
+            <div><p class="text-[10px] text-stone-500 uppercase tracking-wider">Email</p><p class="text-sm text-stone-200 mt-0.5">shinyustellar@gmail.com</p></div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl detail-box flex items-center justify-center flex-shrink-0"><span class="iconify text-lg text-stone-400" data-icon="mdi:clock-outline"></span></div>
+            <div><p class="text-[10px] text-stone-500 uppercase tracking-wider">Response Time</p><p class="text-sm text-stone-200 mt-0.5">Usually within 12-24 hours</p></div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl detail-box flex items-center justify-center flex-shrink-0 mt-0.5"><span class="iconify text-lg text-stone-400" data-icon="mdi:share-variant-outline"></span></div>
+            <div>
+              <p class="text-[10px] text-stone-500 uppercase tracking-wider mb-2.5">Find Me On</p>
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <a href="https://www.youtube.com/@ShinyuStellar" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-[#FF0000]/10 border border-[#FF0000]/20 flex items-center justify-center cursor-pointer" title="YouTube"><span class="iconify text-lg text-[#FF0000]" data-icon="mdi:youtube"></span></a>
+                <a href="https://www.tiktok.com/@shinyu.stellar?_r=1&_t=ZS-98Sn4OMobbu" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-white/[0.04] border border-white/[0.08] flex items-center justify-center cursor-pointer" title="TikTok"><span class="iconify text-lg text-stone-100" data-icon="simple-icons:tiktok"></span></a>
+                <a href="https://www.instagram.com/shinyustellar?igsh=MXBic3I4ZWZmMm1ncg%3D%3D&utm_source=qr" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-[#E4405F]/10 border border-[#E4405F]/20 flex items-center justify-center cursor-pointer" title="Instagram"><span class="iconify text-lg text-[#E4405F]" data-icon="mdi:instagram"></span></a>
+                <a href="https://www.facebook.com/share/1Bt8vizHmB/?mibextid=wwXIfr" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-[#1877F2]/10 border border-[#1877F2]/20 flex items-center justify-center cursor-pointer" title="Facebook"><span class="iconify text-lg text-[#1877F2]" data-icon="mdi:facebook"></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <form id="contactForm" class="p-7 rounded-2xl border border-white/[0.05]" style="background:linear-gradient(180deg,rgba(44,41,38,0.9),rgba(35,31,30,0.95))" novalidate>
+          <div>
+            <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Your Name <span class="text-red-400/60">*</span></label>
+            <input type="text" id="formName" placeholder="What should I call you?" class="form-input mt-1.5">
+            <p class="field-error-msg" id="nameError">Please enter your name</p>
+          </div>
+          <div class="mt-4">
+            <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Email <span class="text-red-400/60">*</span></label>
+            <input type="email" id="formEmail" placeholder="your@email.com" class="form-input mt-1.5">
+            <p class="field-error-msg" id="emailError">Please enter a valid email</p>
+          </div>
+          <div class="mt-4">
+            <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Subject <span class="text-red-400/60">*</span></label>
+            <div class="select-wrap mt-1.5">
+              <select id="formSubject" class="form-select">
+                <option value="">Choose a subject</option>
+                <option value="I want to license a track">I want to license a track</option>
+                <option value="Custom track request">Custom track request</option>
+                <option value="Exclusive rights inquiry">Exclusive rights inquiry</option>
+                <option value="Bulk licensing discount">Bulk licensing discount</option>
+                <option value="Something else">Something else</option>
+              </select>
+              <span class="select-arrow iconify" data-icon="mdi:chevron-down"></span>
+            </div>
+            <p class="field-error-msg" id="subjectError">Please choose a subject</p>
+          </div>
+          <div class="mt-4">
+            <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Track</label>
+            <div class="select-wrap mt-1.5" id="trackSelectWrap">
+              <select id="formTrack" class="form-select">
+                <option value="">Select (optional)</option>
+              </select>
+              <button type="button" class="clear-select-btn" id="clearTrackBtn" onclick="clearTrackSelection()" title="Remove selection"><span class="iconify" data-icon="mdi:close"></span></button>
+              <span class="select-arrow iconify" data-icon="mdi:chevron-down"></span>
+            </div>
+            <div class="selected-pill" id="selectedPill">
+              <span id="pillText"></span>
+              <span class="pill-remove" onclick="clearTrackSelection()" title="Remove"><span class="iconify" data-icon="mdi:close"></span></span>
+            </div>
+          </div>
+          <div class="mt-4">
+            <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Message <span class="text-red-400/60">*</span></label>
+            <textarea id="formMessage" rows="4" placeholder="Tell me about your project, desired mood, length, etc..." class="form-textarea mt-1.5"></textarea>
+            <p class="field-error-msg" id="messageError">Please write a message</p>
+          </div>
+          <button type="submit" id="submitBtn" class="btn-primary w-full text-sm font-medium text-white px-5 py-3 rounded-lg flex items-center justify-center gap-2 mt-5">
+            <span class="iconify" data-icon="mdi:send-variant-outline" id="submitIcon"></span>
+            <span id="submitText">Send Message</span>
+          </button>
+          <p class="text-[11px] text-stone-600 text-center mt-3"><span class="text-red-400/40">*</span> Required fields</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="relative z-10 px-6 py-10 border-t border-white/[0.04]">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:linear-gradient(135deg,#5a4e42,#3a3228)"><span class="iconify text-white/70 text-xs" data-icon="mdi:waveform"></span></div>
+        <span class="text-xs font-medium text-stone-500">ShinyuStellar</span>
+      </div>
+      <div class="flex items-center gap-5">
+        <a href="#home" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">Home</a>
+        <a href="#catalog" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">Catalog</a>
+        <a href="#about" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">About</a>
+        <a href="#licensing" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">Licensing</a>
+        <a href="#contact" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">Contact</a>
+      </div>
+      <p class="text-[11px] text-stone-700 cursor-pointer select-none" id="footerCopyright">© 2026 ShinyuStellar</p>
+    </div>
+  </footer>
+
+  <div id="trackModal" class="fixed inset-0 z-[100] hidden">
+    <div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
+    <div class="relative z-10 w-full h-full overflow-y-auto">
+      <div class="max-w-5xl mx-auto px-6 py-12 min-h-screen flex items-start justify-center">
+        <div id="modalContent" class="w-full bg-[#2C2926] border border-white/[0.06] rounded-2xl overflow-hidden animate-scale relative"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-[200] space-y-3"></div>
+
+  <button id="backToTop" class="fixed bottom-6 left-6 z-50 w-10 h-10 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-white/[0.07]" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span class="iconify text-lg text-stone-400" data-icon="mdi:chevron-up"></span>
+  </button>
+
+  <script>
+    // EMAIL SOLUTION: Using FormSubmit.co to send emails directly to your inbox
+    var CONTACT_EMAIL = "shinyustellar@gmail.com"; 
+
+    var GH = "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/refs/heads/main/";
+
+    var tracks = [
+      {
+        id: 1,
+        title: "Avalanche Lullaby",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2966.jpeg",
+        description: "A gentle, cascading melody that sweeps over you like a soft avalanche of sound. Perfect for winding down, meditation, or creating a peaceful atmosphere in any space.",
+        duration: "3:42",
+        bpm: 68,
+        key: "D minor",
+        format: "WAV / MP3",
+        created: "2026-01-15",
+        tags: ["refreshing", "calming", "gentle", "pads"],
+        previewUrl: GH + "Avalanche%20Lullaby.mp3"
+      },
+      {
+        id: 2,
+        title: "Beyond The Astral Plane",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2967.jpeg",
+        description: "Ethereal tones that transport you beyond the physical world. Floating harmonies and spacious textures create a truly otherworldly, refreshing listening experience.",
+        duration: "4:15",
+        bpm: 72,
+        key: "A minor",
+        format: "WAV / MP3",
+        created: "2026-02-03",
+        tags: ["refreshing", "ethereal", "space", "floating"],
+        previewUrl: GH + "Beyond%20the%20Astral%20Plane.mp3"
+      },
+      {
+        id: 3,
+        title: "Velvet Sky Transition",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2968.jpeg",
+        description: "Smooth as velvet, this track glides through tonal shifts like a sky transitioning from dusk to dawn. Warm, enveloping, and deeply soothing for the soul.",
+        duration: "3:58",
+        bpm: 75,
+        key: "F major",
+        format: "WAV / MP3",
+        created: "2026-01-28",
+        tags: ["refreshing", "smooth", "warm", "transition"],
+        previewUrl: GH + "Velvet%20Sky%20Transition.mp3"
+      },
+      {
+        id: 4,
+        title: "Bamboo Wind Chimes",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2969.jpeg",
+        description: "Organic, nature-inspired tones that mimic the gentle clatter of bamboo chimes in a summer breeze. Zen-like simplicity that clears the mind and refreshes the spirit.",
+        duration: "4:30",
+        bpm: 60,
+        key: "G major",
+        format: "WAV / MP3",
+        created: "2026-03-10",
+        tags: ["refreshing", "zen", "nature", "organic"],
+        previewUrl: GH + "Bamboo%20Wind%20Chimes.mp3"
+      },
+      {
+        id: 5,
+        title: "Porch Swing in September",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2970.jpeg",
+        description: "Warm nostalgia wrapped in gentle melodies. Like sitting on a porch swing as autumn approaches — comforting, familiar, and peacefully refreshing.",
+        duration: "3:24",
+        bpm: 78,
+        key: "Bb major",
+        format: "WAV / MP3",
+        created: "2026-02-14",
+        tags: ["refreshing", "nostalgic", "warm", "autumn"],
+        previewUrl: GH + "Porch%20Swing%20in%20September.mp3"
+      },
+      {
+        id: 6,
+        title: "Secret of Enchanted Grove",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_24902865-7A9C-441C-86BF-EB8DB3E01C7B.jpeg",
+        description: "Mystical and inviting, this track reveals hidden melodies like sunlight filtering through ancient trees. A refreshing escape into a world of natural wonder.",
+        duration: "4:48",
+        bpm: 70,
+        key: "E minor",
+        format: "WAV / MP3",
+        created: "2026-03-01",
+        tags: ["refreshing", "mystical", "nature", "enchanted"],
+        previewUrl: GH + "Secrets%20of%20the%20Enchanted%20Grove.mp3"
+      },
+      {
+        id: 7,
+        title: "A Single Chime in The Void",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_A4B2EEBE-8D38-4DB3-A974-B66D2BCB6C49.jpeg",
+        description: "Minimal and meditative. A single resonant tone that expands into silence, then returns. Refreshing in its simplicity — space to breathe, room to think.",
+        duration: "5:10",
+        bpm: 55,
+        key: "C major",
+        format: "WAV / MP3",
+        created: "2026-02-20",
+        tags: ["refreshing", "minimal", "meditative", "chime"],
+        previewUrl: GH + "A%20Single%20Chime%20in%20the%20Void.mp3"
+      },
+      {
+        id: 8,
+        title: "Twilight Amble",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_EA877258-537B-4570-998F-F561A7C1CAAB.jpeg",
+        description: "A leisurely stroll through fading light. Soft harmonies and gentle rhythms create the perfect soundtrack for quiet evening moments and peaceful reflection.",
+        duration: "3:36",
+        bpm: 74,
+        key: "Ab major",
+        format: "WAV / MP3",
+        created: "2026-01-22",
+        tags: ["refreshing", "evening", "gentle", "reflective"],
+        previewUrl: GH + "Twilight%20Amble.mp3"
+      },
+      {
+        id: 9,
+        title: "Vanilla and Warm Wood",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_F6ED2193-A818-4A09-A3C2-70F50FC91563.jpeg",
+        description: "Cozy, warm, and inviting. Like the scent of vanilla and polished wood on a quiet morning. Deeply comforting yet refreshingly simple in its composition.",
+        duration: "4:02",
+        bpm: 66,
+        key: "Db major",
+        format: "WAV / MP3",
+        created: "2026-03-05",
+        tags: ["refreshing", "warm", "cozy", "comforting"],
+        previewUrl: GH + "Vanilla%20and%20Warm%20Wood.mp3"
+      },
+      {
+        id: 10,
+        title: "Finger Tracing the Wind",
+        genre: "refreshing",
+        status: "available",
+        price: 10,
+        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_FBEFBEFC-4350-4906-8343-F5D95931ECE2.jpeg",
+        description: "Delicate and airy, like tracing invisible patterns in a passing breeze. Light, refreshing, and effortlessly beautiful — a track that simply breathes.",
+        duration: "3:50",
+        bpm: 71,
+        key: "Eb major",
+        format: "WAV / MP3",
+        created: "2026-02-28",
+        tags: ["refreshing", "delicate", "airy", "light"],
+        previewUrl: GH + "Fingers%20Tracing%20the%20Wind.mp3"
+      }
+    ];
+
+    var notifications = [
+      { id:1, text:"🎵 'Avalanche Lullaby' is now available for licensing!", time:"2 min ago", unread:true },
+      { id:2, text:"✨ New 'Refreshing' genre added to the catalog!", time:"1 hour ago", unread:true },
+      { id:3, text:"🔔 10 new tracks just dropped — come check them out!", time:"3 hours ago", unread:true }
+    ];
+
+    var currentAudio = null;
+    var currentTrackId = null;
+    var isPlaying = false;
+
+    var faqs = [
+      { q:"Can I use a track in my YouTube video?", a:"Yes! With a Commercial License, you can use any track in monetized YouTube videos, social media content, and more. No copyright claims will be filed against you." },
+      { q:"What's the difference between Personal and Commercial?", a:"Personal is for non-monetized, personal projects only. Commercial allows monetized content, business use, and includes a license certificate." },
+      { q:"Do I get stems or just the final mix?", a:"Personal and Commercial licenses include the final mix only (MP3 + WAV). Exclusive Rights include full stems so you can remix or customize." },
+      { q:"Can I get a refund?", a:"Since digital files can't be 'returned,' refunds are handled on a case-by-case basis. Contact me within 48 hours if there's an issue with your file." },
+      { q:"What does 'Exclusive' mean?", a:"When you buy Exclusive Rights, the track is removed from the catalog and you get full ownership. No one else can license it after that." },
+      { q:"How are these tracks made?", a:"Each track is generated using AI music models, then carefully curated, mixed, and mastered by a human producer. Only the best make it to the catalog." },
+      { q:"Can I request a custom track?", a:"Absolutely! Use the contact form or DM me on social media to describe your needs — mood, genre, length, BPM, whatever. I'll create it and send you a preview before you commit." }
+    ];
+
+    function renderFAQs() {
+      var c = document.getElementById('faqContainer');
+      c.innerHTML = faqs.map(function(f, i) {
+        return '<div class="faq-item border border-white/[0.05] rounded-xl overflow-hidden">' +
+          '<button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFAQ(' + i + ')">' +
+          '<span class="text-sm font-medium text-stone-200 pr-4">' + f.q + '</span>' +
+          '<span class="iconify text-stone-500 flex-shrink-0 transition-transform duration-300" data-icon="mdi:chevron-down" id="faqIcon' + i + '"></span>' +
+          '</button>' +
+          '<div class="hidden px-5 pb-5" id="faqAnswer' + i + '">' +
+          '<p class="text-sm text-stone-400 leading-relaxed">' + f.a + '</p>' +
+          '</div></div>';
+      }).join('');
+    }
+    function toggleFAQ(i) {
+      var a = document.getElementById('faqAnswer' + i);
+      var ic = document.getElementById('faqIcon' + i);
+      var isOpen = !a.classList.contains('hidden');
+      if (isOpen) { a.classList.add('hidden'); ic.style.transform = 'rotate(0deg)'; }
+      else { a.classList.remove('hidden'); ic.style.transform = 'rotate(180deg)'; }
+    }
+    renderFAQs();
+
+    function renderNotifications() {
+      var list = document.getElementById('notificationList');
+      var mList = document.getElementById('mobileNotificationList');
+      var html = notifications.map(function(n) {
+        return '<div class="notification-item' + (n.unread ? ' unread' : '') + '" onclick="dismissNotification(' + n.id + ')">' +
+          '<div class="flex items-start gap-3">' +
+          (n.unread ? '<div class="notification-dot mt-1.5"></div>' : '<div class="w-1.5 mt-1.5"></div>') +
+          '<div><p class="text-xs text-stone-200 leading-relaxed">' + n.text + '</p><p class="text-[10px] text-stone-500 mt-1">' + n.time + '</p></div>' +
+          '</div></div>';
+      }).join('');
+      list.innerHTML = html;
+      if (mList) mList.innerHTML = html;
+      updateBadge();
+    }
+    function updateBadge() {
+      var count = notifications.filter(function(n) { return n.unread; }).length;
+      var badge = document.getElementById('notificationBadge');
+      var mBadge = document.getElementById('mobileNotificationBadge');
+      if (count > 0) { badge.textContent = count; badge.style.display = 'flex'; if (mBadge) { mBadge.textContent = count; mBadge.style.display = 'flex'; } }
+      else { badge.style.display = 'none'; if (mBadge) mBadge.style.display = 'none'; }
+    }
+    function dismissNotification(id) {
+      notifications = notifications.filter(function(n) { return n.id !== id; });
+      renderNotifications();
+    }
+    function markAllAsRead(e, mobile) {
+      if (e) e.stopPropagation();
+      notifications.forEach(function(n) { n.unread = false; });
+      renderNotifications();
+    }
+    function toggleNotifications() {
+      var dd = document.getElementById('notificationDropdown');
+      dd.classList.toggle('active');
+      var bell = document.getElementById('bellIcon');
+      if (dd.classList.contains('active')) bell.setAttribute('data-icon', 'mdi:bell'); else bell.setAttribute('data-icon', 'mdi:bell-outline');
+    }
+    function toggleMobileNotifications() {
+      var dd = document.getElementById('mobileNotificationDropdown');
+      dd.classList.toggle('hidden');
+    }
+    renderNotifications();
+    document.addEventListener('click', function(e) {
+      var dd = document.getElementById('notificationDropdown');
+      var bell = document.getElementById('notificationBell');
+      if (!bell.contains(e.target)) { dd.classList.remove('active'); document.getElementById('bellIcon').setAttribute('data-icon', 'mdi:bell-outline'); }
+    });
+
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 60) { navbar.classList.add('nav-scrolled'); }
+      else { navbar.classList.remove('nav-scrolled'); }
+    });
+    var mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var menuIcon = document.getElementById('menuIcon');
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+      menuIcon.setAttribute('data-icon', mobileMenu.classList.contains('hidden') ? 'mdi:menu' : 'mdi:close');
+    });
+    function closeMobileMenu() { mobileMenu.classList.add('hidden'); menuIcon.setAttribute('data-icon', 'mdi:menu'); }
+
+    var btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 500) { btt.style.opacity = '1'; btt.style.pointerEvents = 'auto'; }
+      else { btt.style.opacity = '0'; btt.style.pointerEvents = 'none'; }
+    });
+
+    function animateStats() {
+      var total = tracks.length;
+      var sold = tracks.filter(function(t) { return t.status === 'licensed' || t.status === 'exclusive'; }).length;
+      var genres = [];
+      tracks.forEach(function(t) { if (genres.indexOf(t.genre) === -1) genres.push(t.genre); });
+      animateNumber('statTotal', total); animateNumber('statSold', sold); animateNumber('statCategories', genres.length);
+    }
+    function animateNumber(id, target) {
+      var el = document.getElementById(id); var start = 0; var duration = 1500; var startTime = null;
+      function step(ts) {
+        if (!startTime) startTime = ts;
+        var p = Math.min((ts - startTime) / duration, 1);
+        el.textContent = Math.floor(p * target);
+        if (p < 1) requestAnimationFrame(step); else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+    animateStats();
+
+    var currentFilter = 'all';
+    var currentSort = 'newest';
+
+    function getFilteredTracks() {
+      var filtered = currentFilter === 'all' ? tracks.slice() : tracks.filter(function(t) { return t.genre === currentFilter; });
+      var sortMap = {
+        'newest': function(a, b) { return new Date(b.created) - new Date(a.created); },
+        'oldest': function(a, b) { return new Date(a.created) - new Date(b.created); },
+        'price-low': function(a, b) { return a.price - b.price; },
+        'price-high': function(a, b) { return b.price - a.price; },
+        'duration-short': function(a, b) { return parseDuration(a.duration) - parseDuration(b.duration); },
+        'duration-long': function(a, b) { return parseDuration(b.duration) - parseDuration(a.duration); }
+      };
+      if (sortMap[currentSort]) filtered.sort(sortMap[currentSort]);
+      return filtered;
+    }
+    function parseDuration(d) { var parts = d.split(':'); return parseInt(parts[0]) * 60 + parseInt(parts[1]); }
+
+    function renderGrid() {
+      var grid = document.getElementById('musicGrid');
+      var empty = document.getElementById('emptyState');
+      var filtered = getFilteredTracks();
+      document.getElementById('trackCount').textContent = 'Showing ' + filtered.length + ' track' + (filtered.length !== 1 ? 's' : '');
+      if (filtered.length === 0) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
+      empty.classList.add('hidden');
+      grid.innerHTML = filtered.map(function(t) {
+        var statusClass = t.status === 'available' ? 'status-avail' : t.status === 'licensed' ? 'status-sold' : t.status === 'exclusive' ? 'status-exclusive' : 'status-reserved';
+        var statusLabel = t.status.charAt(0).toUpperCase() + t.status.slice(1);
+        return '<div class="music-card card-hover rounded-2xl bg-white/[0.02] border border-white/[0.05] overflow-hidden cursor-pointer" data-id="' + t.id + '" onclick="openModal(' + t.id + ')">' +
+          '<div class="music-card-image-wrap aspect-square">' +
+          '<img src="' + t.image + '" alt="' + t.title + '" loading="lazy" decoding="async" class="w-full h-full object-cover">' +
+          '<div class="play-overlay"><div class="play-btn"><span class="iconify text-white text-xl" data-icon="mdi:play"></span></div></div>' +
+          '<div class="absolute top-3 left-3 z-10"><span class="price-badge text-[10px] font-semibold px-2.5 py-1 rounded-full">$' + t.price + '</span></div>' +
+          '<div class="absolute top-3 right-3 z-10"><span class="' + statusClass + ' text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full">' + statusLabel + '</span></div>' +
+          '</div>' +
+          '<div class="p-4 flex-1 flex flex-col">' +
+          '<h3 class="text-sm font-semibold text-stone-200 truncate">' + t.title + '</h3>' +
+          '<p class="text-[11px] text-stone-500 mt-1 capitalize">' + t.genre + '</p>' +
+          '<div class="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.04]">' +
+          '<span class="text-[10px] text-stone-500 flex items-center gap-1"><span class="iconify text-xs" data-icon="mdi:clock-outline"></span>' + t.duration + '</span>' +
+          '<span class="text-[10px] text-stone-500 flex items-center gap-1"><span class="iconify text-xs" data-icon="mdi:metronome"></span>' + t.bpm + ' BPM</span>' +
+          '</div></div></div>';
+      }).join('');
+    }
+
+    document.getElementById('filterContainer').addEventListener('click', function(e) {
+      var btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentFilter = btn.getAttribute('data-filter');
+      renderGrid();
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', function(e) {
+      currentSort = e.target.value;
+      renderGrid();
+    });
+
+    renderGrid();
+
+    function openModal(id) {
+      var t = tracks.find(function(tr) { return tr.id === id; });
+      if (!t) return;
+      var modal = document.getElementById('trackModal');
+      var content = document.getElementById('modalContent');
+      var statusClass = t.status === 'available' ? 'status-avail' : t.status === 'licensed' ? 'status-sold' : t.status === 'exclusive' ? 'status-exclusive' : 'status-reserved';
+      var statusLabel = t.status.charAt(0).toUpperCase() + t.status.slice(1);
+      content.innerHTML =
+        '<button onclick="closeModal()" class="modal-close-btn"><span class="iconify text-white text-xl" data-icon="mdi:close"></span></button>' +
+        '<div class="grid md:grid-cols-2">' +
+        '<div class="relative aspect-square md:aspect-auto"><img src="' + t.image + '" alt="' + t.title + '" decoding="async" class="w-full h-full object-cover">' +
+        '<div class="absolute inset-0 bg-gradient-to-t from-[#2C2926] via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#2C2926]"></div></div>' +
+        '<div class="p-8 md:p-10 flex flex-col">' +
+        '<div class="flex items-center gap-2 mb-4"><span class="' + statusClass + ' text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full">' + statusLabel + '</span><span class="price-badge text-[10px] font-semibold px-2.5 py-1 rounded-full">$' + t.price + '</span></div>' +
+        '<h2 class="text-2xl md:text-3xl font-bold text-stone-100 tracking-tight">' + t.title + '</h2>' +
+        '<p class="text-xs text-stone-500 capitalize mt-1">' + t.genre + '</p>' +
+        '<p class="text-sm text-stone-400 leading-relaxed mt-4">' + t.description + '</p>' +
+        '<div class="grid grid-cols-2 gap-3 mt-6">' +
+        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Duration</p><p class="text-sm text-stone-200 mt-0.5">' + t.duration + '</p></div>' +
+        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">BPM</p><p class="text-sm text-stone-200 mt-0.5">' + t.bpm + '</p></div>' +
+        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Key</p><p class="text-sm text-stone-200 mt-0.5">' + t.key + '</p></div>' +
+        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Format</p><p class="text-sm text-stone-200 mt-0.5">' + t.format + '</p></div>' +
+        '</div>' +
+        '<div class="flex flex-wrap gap-2 mt-5">' + t.tags.map(function(tag) { return '<span class="tag text-[10px] px-2.5 py-1 rounded-full">' + tag + '</span>'; }).join('') + '</div>' +
+        '<div class="flex items-center gap-3 mt-8">' +
+        '<button class="btn-primary flex-1 text-sm font-medium text-white px-5 py-3 rounded-lg flex items-center justify-center gap-2" onclick="playPreview(' + t.id + ')" id="playBtn' + t.id + '">' +
+        '<span class="iconify" data-icon="mdi:play" id="playIcon' + t.id + '"></span><span id="playText' + t.id + '">Play Preview</span></button>' +
+        '<a href="#contact" class="btn-ghost text-sm font-medium text-stone-300 px-5 py-3 rounded-lg flex items-center justify-center gap-2" onclick="closeModal()"><span class="iconify" data-icon="mdi:message-outline"></span>Inquire</a>' +
+        '</div>' +
+        '<div class="hidden items-center gap-3 mt-4" id="eqContainer' + t.id + '">' +
+        '<div class="equalizer"><div class="equalizer-bar"></div><div class="equalizer-bar"></div><div class="equalizer-bar"></div></div>' +
+        '<span class="text-[11px] text-stone-400">Now playing...</span>' +
+        '</div>' +
+        '</div></div>';
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('trackModal').classList.add('hidden');
+      document.body.style.overflow = '';
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; isPlaying = false; currentTrackId = null; }
+    }
+
+    function playPreview(id) {
+      var t = tracks.find(function(tr) { return tr.id === id; });
+      if (!t) return;
+      if (currentTrackId === id && isPlaying) {
+        currentAudio.pause(); isPlaying = false;
+        document.getElementById('playIcon' + id).setAttribute('data-icon', 'mdi:play');
+        document.getElementById('playText' + id).textContent = 'Play Preview';
+        document.getElementById('eqContainer' + id).classList.add('hidden');
+        document.getElementById('eqContainer' + id).classList.remove('flex');
+        return;
+      }
+      if (currentAudio) { currentAudio.pause(); if (currentTrackId) { resetPlayUI(currentTrackId); } }
+      currentAudio = new Audio(t.previewUrl);
+      currentTrackId = id;
+      currentAudio.play().then(function() {
+        isPlaying = true;
+        document.getElementById('playIcon' + id).setAttribute('data-icon', 'mdi:pause');
+        document.getElementById('playText' + id).textContent = 'Pause';
+        document.getElementById('eqContainer' + id).classList.remove('hidden');
+        document.getElementById('eqContainer' + id).classList.add('flex');
+      }).catch(function(err) {
+        showToast('Could not play preview. The file may still be loading — try again in a few seconds.', 'error');
+      });
+      currentAudio.addEventListener('ended', function() { resetPlayUI(id); isPlaying = false; currentTrackId = null; });
+    }
+
+    function resetPlayUI(id) {
+      var icon = document.getElementById('playIcon' + id);
+      var text = document.getElementById('playText' + id);
+      var eq = document.getElementById('eqContainer' + id);
+      if (icon) icon.setAttribute('data-icon', 'mdi:play');
+      if (text) text.textContent = 'Play Preview';
+      if (eq) { eq.classList.add('hidden'); eq.classList.remove('flex'); }
+    }
+
+    function showToast(msg, type) {
+      var c = document.getElementById('toastContainer');
+      var t = document.createElement('div');
+      t.className = 'toast px-5 py-3 rounded-lg text-sm font-medium flex items-center gap-2 ' + (type === 'error' ? 'bg-red-500/15 border border-red-500/20 text-red-300' : 'bg-white/10 border border-white/10 text-stone-200');
+      t.innerHTML = '<span class="iconify" data-icon="' + (type === 'error' ? 'mdi:alert-circle-outline' : 'mdi:check-circle-outline') + '"></span>' + msg;
+      c.appendChild(t);
+      setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 3500);
+    }
+
+    var formTrackSelect = document.getElementById('formTrack');
+    function updateContactFormTracks() {
+      formTrackSelect.innerHTML = '<option value="">Select (optional)</option>';
+      tracks.forEach(function(t) {
+        var opt = document.createElement('option');
+        opt.value = t.title;
+        opt.textContent = t.title;
+        formTrackSelect.appendChild(opt);
+      });
+    }
+    updateContactFormTracks();
+
+    document.getElementById('formTrack').addEventListener('change', function() {
+      var val = this.value;
+      var pill = document.getElementById('selectedPill');
+      var clearBtn = document.getElementById('clearTrackBtn');
+      if (val) { pill.classList.add('visible'); document.getElementById('pillText').textContent = val; clearBtn.classList.add('visible'); }
+      else { pill.classList.remove('visible'); clearBtn.classList.remove('visible'); }
+    });
+
+    function clearTrackSelection() {
+      document.getElementById('formTrack').value = '';
+      document.getElementById('selectedPill').classList.remove('visible');
+      document.getElementById('clearTrackBtn').classList.remove('visible');
+    }
+
+    // EMAIL SOLUTION: FormSubmit.co sends the form directly to your Gmail inbox
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var name = document.getElementById('formName');
+      var email = document.getElementById('formEmail');
+      var subject = document.getElementById('formSubject');
+      var track = document.getElementById('formTrack');
+      var message = document.getElementById('formMessage');
+      var valid = true;
+
+      function clearErrors() { document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('field-error'); }); document.querySelectorAll('.field-error-msg').forEach(function(el) { el.classList.remove('visible'); }); }
+      clearErrors();
+
+      if (!name.value.trim()) { name.classList.add('field-error'); document.getElementById('nameError').classList.add('visible'); valid = false; }
+      if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) { email.classList.add('field-error'); document.getElementById('emailError').classList.add('visible'); valid = false; }
+      if (!subject.value) { subject.classList.add('field-error'); document.getElementById('subjectError').classList.add('visible'); valid = false; }
+      if (!message.value.trim()) { message.classList.add('field-error'); document.getElementById('messageError').classList.add('visible'); valid = false; }
+
+      if (!valid) { this.classList.add('shake'); setTimeout(function() { document.getElementById('contactForm').classList.remove('shake'); }, 400); return; }
+
+      var btn = document.getElementById('submitBtn');
+      var icon = document.getElementById('submitIcon');
+      var text = document.getElementById('submitText');
+      btn.disabled = true;
+      icon.setAttribute('data-icon', 'mdi:loading');
+      icon.classList.add('spin');
+      text.textContent = 'Sending...';
+
+      var formData = {
+        name: name.value.trim(),
+        email: email.value.trim(),
+        subject: subject.value + (track.value ? " (Track: " + track.value + ")" : ""),
+        track: track.value,
+        message: message.value.trim(),
+        _template: "table"
+      };
+
+      fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        if (data.success === "true" || data.success === true) {
+          showToast('Message sent successfully!');
+          document.getElementById('contactForm').reset();
+          clearTrackSelection();
+        } else {
+          showToast('Could not send message. Try again.', 'error');
+        }
+      })
+      .catch(function() {
+        showToast('Could not send message. Try again.', 'error');
+      })
+      .finally(function() {
+        btn.disabled = false;
+        icon.setAttribute('data-icon', 'mdi:send-variant-outline');
+        icon.classList.remove('spin');
+        text.textContent = 'Send Message';
+      });
+    });
+
+    var adminClicks = 0; var adminTimer = null;
+    document.getElementById('footerCopyright').addEventListener('click', function() {
+      adminClicks++;
+      if (adminTimer) clearTimeout(adminTimer);
+      adminTimer = setTimeout(function() { adminClicks = 0; }, 1500);
+      if (adminClicks >= 5) { 
+        adminClicks = 0; 
+        openAdmin(); 
+      }
+    });
+
+    function openAdmin() {
+      var overlay = document.getElementById('adminOverlay');
+      var body = document.getElementById('adminMusicList');
+      body.innerHTML = tracks.map(function(t) {
+        return '<div class="admin-music-row" id="adminRow' + t.id + '">' +
+          '<img src="' + t.image + '" alt="" decoding="async" class="admin-music-img">' +
+          '<div class="admin-music-info"><p class="text-sm font-medium text-stone-200 truncate">' + t.title + '</p><p class="text-[10px] text-stone-500 capitalize">' + t.genre + ' · $' + t.price + '</p></div>' +
+          '<div class="admin-select-wrap"><select class="admin-status-select" data-track-id="' + t.id + '" onchange="changeStatus(' + t.id + ', this.value)">' +
+          '<option value="available"' + (t.status === 'available' ? ' selected' : '') + '>Available</option>' +
+          '<option value="licensed"' + (t.status === 'licensed' ? ' selected' : '') + '>Licensed</option>' +
+          '<option value="exclusive"' + (t.status === 'exclusive' ? ' selected' : '') + '>Exclusive</option>' +
+          '<option value="reserved"' + (t.status === 'reserved' ? ' selected' : '') + '>Reserved</option>' +
+          '</select><span class="select-arrow iconify" data-icon="mdi:chevron-down"></span></div>' +
+          '<div class="admin-action-btns">' +
+            '<button onclick="openEditModal(' + t.id + ')" class="admin-action-btn" title="Edit"><span class="iconify" data-icon="mdi:pencil-outline"></span></button>' +
+            '<button onclick="deleteTrack(' + t.id + ')" class="admin-action-btn danger" title="Delete"><span class="iconify" data-icon="mdi:trash-can-outline"></span></button>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+      overlay.classList.add('active');
+    }
+
+    function closeAdmin() { document.getElementById('adminOverlay').classList.remove('active'); }
+
+    function changeStatus(id, newStatus) {
+      var t = tracks.find(function(tr) { return tr.id === id; });
+      if (!t) return;
+      t.status = newStatus;
+      var row = document.getElementById('adminRow' + id);
+      if (row) { row.classList.add('status-changed-flash'); setTimeout(function() { row.classList.remove('status-changed-flash'); }, 600); }
+      var statusLabel = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+      notifications.unshift({ id: Date.now(), text: '🔔 "' + t.title + '" status changed to ' + statusLabel, time: 'Just now', unread: true });
+      renderNotifications();
+      renderGrid();
+      animateStats();
+      var bell = document.getElementById('bellIcon');
+      bell.setAttribute('data-icon', 'mdi:bell');
+      bell.parentElement.classList.add('bell-ring');
+      setTimeout(function() { bell.parentElement.classList.remove('bell-ring'); }, 800);
+      showToast('Status updated for "' + t.title + '"');
+    }
+
+    function openEditModal(id) {
+      var t = id ? tracks.find(function(tr) { return tr.id === id; }) : null;
+      if (!t) {
+        t = {
+          id: Date.now(),
+          title: "", genre: "refreshing", status: "available", price: 10,
+          image: "https://picsum.photos/seed/newtrack/400/400.jpg", description: "", duration: "3:00", bpm: 70, key: "C major",
+          format: "WAV / MP3", created: new Date().toISOString().split('T')[0],
+          tags: [], previewUrl: ""
+        };
+        document.getElementById('editModalTitle').textContent = 'Add New Track';
+      } else {
+        document.getElementById('editModalTitle').textContent = 'Edit Track';
+      }
+      document.getElementById('editTrackId').value = t.id;
+      document.getElementById('editTitle').value = t.title;
+      document.getElementById('editGenre').value = t.genre;
+      document.getElementById('editPrice').value = t.price;
+      document.getElementById('editStatus').value = t.status;
+      document.getElementById('editDuration').value = t.duration;
+      document.getElementById('editBpm').value = t.bpm;
+      document.getElementById('editKey').value = t.key;
+      document.getElementById('editImage').value = t.image;
+      document.getElementById('editPreviewUrl').value = t.previewUrl;
+      document.getElementById('editDescription').value = t.description;
+      document.getElementById('editTags').value = t.tags.join(', ');
+
+      document.getElementById('editTrackModal').classList.add('active');
+    }
+
+    function closeEditModal() {
+      document.getElementById('editTrackModal').classList.remove('active');
+    }
+
+    function saveTrack(e) {
+      e.preventDefault();
+      var id = parseInt(document.getElementById('editTrackId').value);
+      var tIndex = tracks.findIndex(function(tr) { return tr.id === id; });
+      var trackData = {
+        id: id,
+        title: document.getElementById('editTitle').value.trim() || 'Untitled Track',
+        genre: document.getElementById('editGenre').value.trim() || 'refreshing',
+        price: parseInt(document.getElementById('editPrice').value) || 0,
+        status: document.getElementById('editStatus').value,
+        duration: document.getElementById('editDuration').value.trim() || '0:00',
+        bpm: parseInt(document.getElementById('editBpm').value) || 0,
+        key: document.getElementById('editKey').value.trim() || 'C major',
+        image: document.getElementById('editImage').value.trim() || 'https://picsum.photos/seed/newtrack/400/400.jpg',
+        previewUrl: document.getElementById('editPreviewUrl').value.trim(),
+        description: document.getElementById('editDescription').value.trim(),
+        tags: document.getElementById('editTags').value.split(',').map(function(t){ return t.trim(); }).filter(Boolean),
+        format: "WAV / MP3",
+        created: tIndex !== -1 ? tracks[tIndex].created : new Date().toISOString().split('T')[0]
+      };
+
+      if (tIndex !== -1) {
+        tracks[tIndex] = trackData;
+        showToast('Track updated successfully!');
+      } else {
+        tracks.unshift(trackData);
+        showToast('New track added successfully!');
+      }
+      closeEditModal();
+      openAdmin(); 
+      renderGrid(); 
+      animateStats(); 
+      updateContactFormTracks(); 
+    }
+
+    function deleteTrack(id) {
+      if (!confirm('Are you sure you want to delete this track? This cannot be undone.')) return;
+      tracks = tracks.filter(function(t) { return t.id !== id; });
+      openAdmin();
+      renderGrid();
+      animateStats();
+      updateContactFormTracks();
+      showToast('Track deleted successfully!');
+    }
+  </script>
+</body>
+</html>
