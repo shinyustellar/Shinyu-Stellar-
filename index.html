@@ -727,177 +727,22 @@
   </button>
 
   <script>
-    // EMAIL SOLUTION: FormSubmit.co sends the form directly to your Gmail inbox
     var CONTACT_EMAIL = "shinyustellar@gmail.com"; 
-    
-    // PREMIUM EMAIL CUSTOMIZATION
-    // Change this link to any image you want to use as your profile picture in the email
     var PFP_URL = "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/Original%20Character%20(%20OC%20)%20References.jpg";
     var WEBSITE_URL = "https://shinyustellar.netlify.app/";
-
     var GH = "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/refs/heads/main/";
 
     var tracks = [
-      {
-        id: 1,
-        title: "Avalanche Lullaby",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2966.jpeg",
-        description: "A gentle, cascading melody that sweeps over you like a soft avalanche of sound. Perfect for winding down, meditation, or creating a peaceful atmosphere in any space.",
-        duration: "3:42",
-        bpm: 68,
-        key: "D minor",
-        format: "WAV / MP3",
-        created: "2026-01-15",
-        tags: ["refreshing", "calming", "gentle", "pads"],
-        previewUrl: GH + "Avalanche%20Lullaby.mp3"
-      },
-      {
-        id: 2,
-        title: "Beyond The Astral Plane",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2967.jpeg",
-        description: "Ethereal tones that transport you beyond the physical world. Floating harmonies and spacious textures create a truly otherworldly, refreshing listening experience.",
-        duration: "4:15",
-        bpm: 72,
-        key: "A minor",
-        format: "WAV / MP3",
-        created: "2026-02-03",
-        tags: ["refreshing", "ethereal", "space", "floating"],
-        previewUrl: GH + "Beyond%20the%20Astral%20Plane.mp3"
-      },
-      {
-        id: 3,
-        title: "Velvet Sky Transition",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2968.jpeg",
-        description: "Smooth as velvet, this track glides through tonal shifts like a sky transitioning from dusk to dawn. Warm, enveloping, and deeply soothing for the soul.",
-        duration: "3:58",
-        bpm: 75,
-        key: "F major",
-        format: "WAV / MP3",
-        created: "2026-01-28",
-        tags: ["refreshing", "smooth", "warm", "transition"],
-        previewUrl: GH + "Velvet%20Sky%20Transition.mp3"
-      },
-      {
-        id: 4,
-        title: "Bamboo Wind Chimes",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2969.jpeg",
-        description: "Organic, nature-inspired tones that mimic the gentle clatter of bamboo chimes in a summer breeze. Zen-like simplicity that clears the mind and refreshes the spirit.",
-        duration: "4:30",
-        bpm: 60,
-        key: "G major",
-        format: "WAV / MP3",
-        created: "2026-03-10",
-        tags: ["refreshing", "zen", "nature", "organic"],
-        previewUrl: GH + "Bamboo%20Wind%20Chimes.mp3"
-      },
-      {
-        id: 5,
-        title: "Porch Swing in September",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/IMG_2970.jpeg",
-        description: "Warm nostalgia wrapped in gentle melodies. Like sitting on a porch swing as autumn approaches — comforting, familiar, and peacefully refreshing.",
-        duration: "3:24",
-        bpm: 78,
-        key: "Bb major",
-        format: "WAV / MP3",
-        created: "2026-02-14",
-        tags: ["refreshing", "nostalgic", "warm", "autumn"],
-        previewUrl: GH + "Porch%20Swing%20in%20September.mp3"
-      },
-      {
-        id: 6,
-        title: "Secret of Enchanted Grove",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_24902865-7A9C-441C-86BF-EB8DB3E01C7B.jpeg",
-        description: "Mystical and inviting, this track reveals hidden melodies like sunlight filtering through ancient trees. A refreshing escape into a world of natural wonder.",
-        duration: "4:48",
-        bpm: 70,
-        key: "E minor",
-        format: "WAV / MP3",
-        created: "2026-03-01",
-        tags: ["refreshing", "mystical", "nature", "enchanted"],
-        previewUrl: GH + "Secrets%20of%20the%20Enchanted%20Grove.mp3"
-      },
-      {
-        id: 7,
-        title: "A Single Chime in The Void",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_A4B2EEBE-8D38-4DB3-A974-B66D2BCB6C49.jpeg",
-        description: "Minimal and meditative. A single resonant tone that expands into silence, then returns. Refreshing in its simplicity — space to breathe, room to think.",
-        duration: "5:10",
-        bpm: 55,
-        key: "C major",
-        format: "WAV / MP3",
-        created: "2026-02-20",
-        tags: ["refreshing", "minimal", "meditative", "chime"],
-        previewUrl: GH + "A%20Single%20Chime%20in%20the%20Void.mp3"
-      },
-      {
-        id: 8,
-        title: "Twilight Amble",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_EA877258-537B-4570-998F-F561A7C1CAAB.jpeg",
-        description: "A leisurely stroll through fading light. Soft harmonies and gentle rhythms create the perfect soundtrack for quiet evening moments and peaceful reflection.",
-        duration: "3:36",
-        bpm: 74,
-        key: "Ab major",
-        format: "WAV / MP3",
-        created: "2026-01-22",
-        tags: ["refreshing", "evening", "gentle", "reflective"],
-        previewUrl: GH + "Twilight%20Amble.mp3"
-      },
-      {
-        id: 9,
-        title: "Vanilla and Warm Wood",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_F6ED2193-A818-4A09-A3C2-70F50FC91563.jpeg",
-        description: "Cozy, warm, and inviting. Like the scent of vanilla and polished wood on a quiet morning. Deeply comforting yet refreshingly simple in its composition.",
-        duration: "4:02",
-        bpm: 66,
-        key: "Db major",
-        format: "WAV / MP3",
-        created: "2026-03-05",
-        tags: ["refreshing", "warm", "cozy", "comforting"],
-        previewUrl: GH + "Vanilla%20and%20Warm%20Wood.mp3"
-      },
-      {
-        id: 10,
-        title: "Finger Tracing the Wind",
-        genre: "refreshing",
-        status: "available",
-        price: 10,
-        image: "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/copy_FBEFBEFC-4350-4906-8343-F5D95931ECE2.jpeg",
-        description: "Delicate and airy, like tracing invisible patterns in a passing breeze. Light, refreshing, and effortlessly beautiful — a track that simply breathes.",
-        duration: "3:50",
-        bpm: 71,
-        key: "Eb major",
-        format: "WAV / MP3",
-        created: "2026-02-28",
-        tags: ["refreshing", "delicate", "airy", "light"],
-        previewUrl: GH + "Fingers%20Tracing%20the%20Wind.mp3"
-      }
+      { id: 1, title: "Avalanche Lullaby", genre: "refreshing", status: "available", price: 10, image: GH + "IMG_2966.jpeg", description: "A gentle, cascading melody that sweeps over you like a soft avalanche of sound. Perfect for winding down, meditation, or creating a peaceful atmosphere in any space.", duration: "3:42", bpm: 68, key: "D minor", format: "WAV / MP3", created: "2026-01-15", tags: ["refreshing", "calming", "gentle", "pads"], previewUrl: GH + "Avalanche%20Lullaby.mp3" },
+      { id: 2, title: "Beyond The Astral Plane", genre: "refreshing", status: "available", price: 10, image: GH + "IMG_2967.jpeg", description: "Ethereal tones that transport you beyond the physical world. Floating harmonies and spacious textures create a truly otherworldly, refreshing listening experience.", duration: "4:15", bpm: 72, key: "A minor", format: "WAV / MP3", created: "2026-02-03", tags: ["refreshing", "ethereal", "space", "floating"], previewUrl: GH + "Beyond%20the%20Astral%20Plane.mp3" },
+      { id: 3, title: "Velvet Sky Transition", genre: "refreshing", status: "available", price: 10, image: GH + "IMG_2968.jpeg", description: "Smooth as velvet, this track glides through tonal shifts like a sky transitioning from dusk to dawn. Warm, enveloping, and deeply soothing for the soul.", duration: "3:58", bpm: 75, key: "F major", format: "WAV / MP3", created: "2026-01-28", tags: ["refreshing", "smooth", "warm", "transition"], previewUrl: GH + "Velvet%20Sky%20Transition.mp3" },
+      { id: 4, title: "Bamboo Wind Chimes", genre: "refreshing", status: "available", price: 10, image: GH + "IMG_2969.jpeg", description: "Organic, nature-inspired tones that mimic the gentle clatter of bamboo chimes in a summer breeze. Zen-like simplicity that clears the mind and refreshes the spirit.", duration: "4:30", bpm: 60, key: "G major", format: "WAV / MP3", created: "2026-03-10", tags: ["refreshing", "zen", "nature", "organic"], previewUrl: GH + "Bamboo%20Wind%20Chimes.mp3" },
+      { id: 5, title: "Porch Swing in September", genre: "refreshing", status: "available", price: 10, image: GH + "IMG_2970.jpeg", description: "Warm nostalgia wrapped in gentle melodies. Like sitting on a porch swing as autumn approaches — comforting, familiar, and peacefully refreshing.", duration: "3:24", bpm: 78, key: "Bb major", format: "WAV / MP3", created: "2026-02-14", tags: ["refreshing", "nostalgic", "warm", "autumn"], previewUrl: GH + "Porch%20Swing%20in%20September.mp3" },
+      { id: 6, title: "Secret of Enchanted Grove", genre: "refreshing", status: "available", price: 10, image: GH + "copy_24902865-7A9C-441C-86BF-EB8DB3E01C7B.jpeg", description: "Mystical and inviting, this track reveals hidden melodies like sunlight filtering through ancient trees. A refreshing escape into a world of natural wonder.", duration: "4:48", bpm: 70, key: "E minor", format: "WAV / MP3", created: "2026-03-01", tags: ["refreshing", "mystical", "nature", "enchanted"], previewUrl: GH + "Secrets%20of%20the%20Enchanted%20Grove.mp3" },
+      { id: 7, title: "A Single Chime in The Void", genre: "refreshing", status: "available", price: 10, image: GH + "copy_A4B2EEBE-8D38-4DB3-A974-B66D2BCB6C49.jpeg", description: "Minimal and meditative. A single resonant tone that expands into silence, then returns. Refreshing in its simplicity — space to breathe, room to think.", duration: "5:10", bpm: 55, key: "C major", format: "WAV / MP3", created: "2026-02-20", tags: ["refreshing", "minimal", "meditative", "chime"], previewUrl: GH + "A%20Single%20Chime%20in%20the%20Void.mp3" },
+      { id: 8, title: "Twilight Amble", genre: "refreshing", status: "available", price: 10, image: GH + "copy_EA877258-537B-4570-998F-F561A7C1CAAB.jpeg", description: "A leisurely stroll through fading light. Soft harmonies and gentle rhythms create the perfect soundtrack for quiet evening moments and peaceful reflection.", duration: "3:36", bpm: 74, key: "Ab major", format: "WAV / MP3", created: "2026-01-22", tags: ["refreshing", "evening", "gentle", "reflective"], previewUrl: GH + "Twilight%20Amble.mp3" },
+      { id: 9, title: "Vanilla and Warm Wood", genre: "refreshing", status: "available", price: 10, image: GH + "copy_F6ED2193-A818-4A09-A3C2-70F50FC91563.jpeg", description: "Cozy, warm, and inviting. Like the scent of vanilla and polished wood on a quiet morning. Deeply comforting yet refreshingly simple in its composition.", duration: "4:02", bpm: 66, key: "Db major", format: "WAV / MP3", created: "2026-03-05", tags: ["refreshing", "warm", "cozy", "comforting"], previewUrl: GH + "Vanilla%20and%20Warm%20Wood.mp3" },
+      { id: 10, title: "Finger Tracing the Wind", genre: "refreshing", status: "available", price: 10, image: GH + "copy_FBEFBEFC-4350-4906-8343-F5D95931ECE2.jpeg", description: "Delicate and airy, like tracing invisible patterns in a passing breeze. Light, refreshing, and effortlessly beautiful — a track that simply breathes.", duration: "3:50", bpm: 71, key: "Eb major", format: "WAV / MP3", created: "2026-02-28", tags: ["refreshing", "delicate", "airy", "light"], previewUrl: GH + "Fingers%20Tracing%20the%20Wind.mp3" }
     ];
 
     var notifications = [
@@ -1203,7 +1048,6 @@
       document.getElementById('clearTrackBtn').classList.remove('visible');
     }
 
-    // PREMIUM HTML EMAIL TEMPLATE
     document.getElementById('contactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       var name = document.getElementById('formName');
@@ -1233,79 +1077,42 @@
       text.textContent = 'Sending...';
 
       var emailHtml = `
-      <div style="background-color:#f4f4f5; padding: 40px 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e4e4e7; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-          
-          <!-- Banner Header -->
-          <div style="background: linear-gradient(135deg, #231F1E 0%, #2C2926 100%); padding: 40px 20px; text-align: center; border-bottom: 4px solid #b8a08a;">
-            <img src="${PFP_URL}" alt="Profile" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #b8a08a; margin-bottom: 15px; object-fit: cover;">
-            <h1 style="color: #ffffff; font-size: 24px; margin: 0; font-weight: 600; letter-spacing: -0.5px;">ShinyuStellar</h1>
-            <p style="color: #b8a08a; font-size: 14px; margin: 5px 0 0 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">New Business Inquiry</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e4e4e7; border-radius: 16px; overflow: hidden;">
+        <div style="background: #231F1E; padding: 30px; text-align: center;">
+          <img src="${PFP_URL}" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #b8a08a; margin-bottom: 10px; object-fit: cover;">
+          <h2 style="color: #fff; margin: 0;">ShinyuStellar</h2>
+          <p style="color: #b8a08a; margin: 5px 0 0;">New Business Inquiry</p>
+        </div>
+        <div style="background: #fff; padding: 30px;">
+          <table style="width: 100%; color: #333; font-size: 15px;">
+            <tr><td style="font-weight: bold; padding-bottom: 10px; width: 100px;">Name:</td><td>${name.value.trim()}</td></tr>
+            <tr><td style="font-weight: bold; padding-bottom: 10px;">Email:</td><td>${email.value.trim()}</td></tr>
+            ${track.value ? `<tr><td style="font-weight: bold; padding-bottom: 10px;">Track:</td><td>${track.value}</td></tr>` : ''}
+            <tr><td style="font-weight: bold; padding-bottom: 20px;">Subject:</td><td>${subject.value}</td></tr>
+          </table>
+          <div style="background: #f4f4f5; border-left: 4px solid #b8a08a; padding: 15px; margin-top: 10px; border-radius: 0 8px 8px 0;">
+            ${message.value.trim().replace(/\n/g, '<br>')}
           </div>
-
-          <!-- Content Body -->
-          <div style="padding: 40px 30px;">
-            
-            <!-- Sender Details -->
-            <div style="background-color: #fafaf9; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid #e7e5e4;">
-              <table style="width: 100%; border-collapse: collapse; color: #44403c; font-size: 15px;">
-                <tr>
-                  <td style="padding: 8px 0; width: 120px; color: #78716c; font-weight: 600;">Name:</td>
-                  <td style="padding: 8px 0; color: #1c1917; font-weight: 500;">${name.value.trim()}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 8px 0; color: #78716c; font-weight: 600;">Email:</td>
-                  <td style="padding: 8px 0; color: #1c1917; font-weight: 500;">${email.value.trim()}</td>
-                </tr>
-                ${track.value ? `
-                <tr>
-                  <td style="padding: 8px 0; color: #78716c; font-weight: 600;">Track:</td>
-                  <td style="padding: 8px 0; color: #1c1917; font-weight: 500;">${track.value}</td>
-                </tr>` : ``}
-                <tr>
-                  <td style="padding: 8px 0; color: #78716c; font-weight: 600;">Subject:</td>
-                  <td style="padding: 8px 0; color: #1c1917; font-weight: 500;">${subject.value}</td>
-                </tr>
-              </table>
-            </div>
-
-            <!-- Message Note Design -->
-            <div style="border-left: 4px solid #b8a08a; padding: 20px 25px; background-color: #fafaf9; border-radius: 0 12px 12px 0; margin-bottom: 30px;">
-              <p style="margin: 0; color: #44403c; font-size: 15px; line-height: 1.6; font-style: italic;">
-                ${message.value.trim().replace(/\n/g, '<br>')}
-              </p>
-            </div>
-
-            <p style="color: #a8a29e; font-size: 13px; text-align: center; margin: 0;">
-              This message was sent from your website contact form.
-            </p>
-          </div>
-
-          <!-- Footer -->
-          <div style="background-color: #fafaf9; padding: 20px 30px; text-align: center; border-top: 1px solid #e7e5e4;">
-            <p style="color: #a8a29e; font-size: 12px; margin: 0;">
-              &copy; 2026 ShinyuStellar | <a href="${WEBSITE_URL}" style="color: #b8a08a; text-decoration: none; font-weight: 500;">Visit Website</a>
-            </p>
-          </div>
-
+        </div>
+        <div style="background: #f4f4f5; padding: 20px; text-align: center;">
+          <p style="color: #71717a; font-size: 12px; margin: 0;">&copy; 2026 ShinyuStellar</p>
         </div>
       </div>
       `;
 
-      var formData = {
-        name: name.value.trim(),
-        email: email.value.trim(),
-        _replyto: email.value.trim(),
-        message: emailHtml,
-        _subject: "New Business Inquiry: " + subject.value + (track.value ? " (" + track.value + ")" : ""),
-        _template: "box",
-        _captcha: "false"
-      };
+      // FIX: Using URLSearchParams instead of JSON so FormSubmit renders the HTML properly
+      var params = new URLSearchParams();
+      params.append('name', name.value.trim());
+      params.append('email', email.value.trim());
+      params.append('_replyto', email.value.trim());
+      params.append('message', emailHtml);
+      params.append('_subject', "New Business Inquiry: " + subject.value + (track.value ? " (" + track.value + ")" : ""));
+      params.append('_captcha', 'false');
 
       fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(formData)
+        headers: { 'Accept': 'application/json' },
+        body: params
       })
       .then(function(response) { return response.json(); })
       .then(function(data) {
