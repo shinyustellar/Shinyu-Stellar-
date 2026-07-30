@@ -1201,6 +1201,7 @@
     }
 
     // EMAIL SOLUTION: FormSubmit.co sends the form directly to your Gmail inbox
+    // _replyto is explicitly passed so you can hit "Reply" in Gmail and it goes to the sender
     document.getElementById('contactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       var name = document.getElementById('formName');
@@ -1223,6 +1224,7 @@
       var btn = document.getElementById('submitBtn');
       var icon = document.getElementById('submitIcon');
       var text = document.getElementById('submitText');
+      
       btn.disabled = true;
       icon.setAttribute('data-icon', 'mdi:loading');
       icon.classList.add('spin');
@@ -1230,11 +1232,13 @@
 
       var formData = {
         name: name.value.trim(),
-        email: email.value.trim(),
+        email: email.value.trim(), // This acts as the sender's email for Reply-To
+        _replyto: email.value.trim(),
         subject: subject.value + (track.value ? " (Track: " + track.value + ")" : ""),
         track: track.value,
         message: message.value.trim(),
-        _template: "table"
+        _template: "table",
+        _subject: "New Inquiry: " + subject.value
       };
 
       fetch('https://formsubmit.co/ajax/' + CONTACT_EMAIL, {
@@ -1249,13 +1253,14 @@
           document.getElementById('contactForm').reset();
           clearTrackSelection();
         } else {
-          showToast('Could not send message. Try again.', 'error');
+          showToast('Could not send. Did you confirm your email?', 'error');
         }
       })
-      .catch(function() {
+      .catch(function(error) {
         showToast('Could not send message. Try again.', 'error');
       })
       .finally(function() {
+        // Reset button state completely
         btn.disabled = false;
         icon.setAttribute('data-icon', 'mdi:send-variant-outline');
         icon.classList.remove('spin');
