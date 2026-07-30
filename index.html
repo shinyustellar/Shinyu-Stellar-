@@ -193,9 +193,8 @@
     .form-select option[value=""] { color: #78716c; }
 
     .sort-select { background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 0.5rem; padding: 0.5rem 2.25rem 0.5rem 0.75rem; font-size: 0.75rem; color: #d6d3d1; outline: none; appearance: none; -webkit-appearance: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.25s ease; }
-    .sort-select:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(184,160,138,0.06); }
+    .sort-select:focus { border-color: var(--input-focus); }
     .sort-select option { background: #2C2926; color: #d6d3d1; padding: 8px 10px; font-size: 0.75rem; }
-    .sort-select option:hover, .sort-select option:checked { background: #44403c; color: #f5f5f4; }
 
     .form-textarea { resize: none; }
 
@@ -212,8 +211,8 @@
     .selected-pill .pill-remove:hover .iconify { color: #f87171; }
     .selected-pill .pill-remove .iconify { color: #a8a29e; font-size: 10px; transition: color 0.2s; }
 
-    .faq-item { transition: border-color 0.3s; }
-    .faq-item:hover { border-color: rgba(184,160,138,0.12); }
+    .faq-item { transition: border-color 0.3s; background: #2C2926; }
+    .faq-item:hover { border-color: rgba(184,160,138,0.15); }
 
     .notification-bell { position: relative; cursor: pointer; transition: all 0.3s ease; }
     .notification-bell:hover { color: #d6d3d1; }
@@ -243,10 +242,10 @@
     .admin-music-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: #1f1c1b; }
     .admin-music-info { flex: 1; min-width: 150px; }
     .admin-status-select { appearance: none; -webkit-appearance: none; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 0.5rem; padding: 8px 32px 8px 12px; font-size: 13px; color: #e7e5e4; outline: none; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.25s ease; min-width: 140px; }
-    .admin-status-select:focus { border-color: var(--input-focus); box-shadow: 0 0 0 3px rgba(184,160,138,0.06); }
+    .admin-status-select:focus { border-color: var(--input-focus); }
     .admin-status-select option { background: #2C2926; color: #d6d3d1; }
     .admin-select-wrap { position: relative; flex-shrink: 0; }
-    .admin-select-wrap .select-arrow { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #a8a29e; font-size: 14px; }
+    .admin-select-wrap .select-arrow { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #78716c; font-size: 14px; }
     .admin-hint { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: rgba(184,160,138,0.06); border: 1px solid rgba(184,160,138,0.1); border-radius: 0.5rem; margin-bottom: 16px; }
     .status-changed-flash { animation: flashGreen 0.6s ease; }
     @keyframes flashGreen { 0%{background:rgba(74,222,128,0.15)} 100%{background:transparent} }
@@ -301,11 +300,11 @@
     </div>
     <div id="mobileMenu" class="hidden md:hidden bg-stone-900/95 backdrop-blur-xl border-t border-white/[0.04]">
       <div class="px-6 py-6 flex flex-col gap-4">
-        <a href="#home" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">Home</a>
-        <a href="#catalog" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">Catalog</a>
-        <a href="#about" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">About</a>
-        <a href="#licensing" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">Licensing</a>
-        <a href="#faq" class="text-stone-400 hover:text-stone-200 transition-colors py-2 text-sm" onclick="closeMobileMenu()">FAQ</a>
+        <a href="#home" class="text-stone-400 hover:text-white transition-colors py-2 text-sm" onclick="closeMobileMenu()">Home</a>
+        <a href="#catalog" class="text-stone-400 hover:text-white transition-colors py-2 text-sm" onclick="closeMobileMenu()">Catalog</a>
+        <a href="#about" class="text-stone-400 hover:text-white transition-colors py-2 text-sm" onclick="closeMobileMenu()">About</a>
+        <a href="#licensing" class="text-stone-400 hover:text-white transition-colors py-2 text-sm" onclick="closeMobileMenu()">Licensing</a>
+        <a href="#faq" class="text-stone-400 hover:text-white transition-colors py-2 text-sm" onclick="closeMobileMenu()">FAQ</a>
         <div class="flex items-center gap-3 py-2 cursor-pointer" onclick="toggleMobileNotifications()">
           <div class="notification-bell relative">
             <span class="iconify text-lg text-stone-400" data-icon="mdi:bell-outline" id="mobileBellIcon"></span>
@@ -316,7 +315,7 @@
         <div class="notification-dropdown hidden" id="mobileNotificationDropdown" style="position:static;width:100%;box-shadow:none;margin-top:8px;opacity:1;visibility:visible;transform:none;">
           <div class="notification-header">
             <span class="text-sm font-medium text-stone-200">Notifications</span>
-            <button class="text-[11px] text-stone-400 hover:text-stone-200 transition-colors" onclick="markAllAsRead(event, true)">Mark all as read</button>
+            <button class="text-[11px] text-stone-400 hover:text-white transition-colors" onclick="markAllAsRead(event, true)">Mark all as read</button>
           </div>
           <div class="notification-list" id="mobileNotificationList"></div>
           <div class="notification-footer"><span class="text-[11px] text-stone-500">Click a notification to dismiss it</span></div>
@@ -336,7 +335,7 @@
           </h3>
           <p class="text-[11px] text-stone-500 mt-0.5">Edit details, update status, or add new tracks below</p>
         </div>
-        <button onclick="closeAdmin()" class="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.07] transition-colors">
+        <button onclick="closeAdmin()" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
           <span class="iconify text-lg text-stone-400" data-icon="mdi:close"></span>
         </button>
       </div>
@@ -365,7 +364,7 @@
           </h3>
           <p class="text-[11px] text-stone-500 mt-0.5">Update track details below. Changes apply instantly.</p>
         </div>
-        <button onclick="closeEditModal()" class="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.07] transition-colors">
+        <button onclick="closeEditModal()" class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors">
           <span class="iconify text-lg text-stone-400" data-icon="mdi:close"></span>
         </button>
       </div>
@@ -434,7 +433,6 @@
     </div>
   </div>
 
-  <!-- Intro/Hero Section with Calm Scenery Wallpaper & High Contrast Text -->
   <section id="home" class="relative min-h-screen flex items-center justify-center px-6 pt-20">
     <div class="absolute inset-0 z-0">
       <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&w=1920&auto=format&fit=crop" alt="" class="w-full h-full object-cover">
@@ -449,14 +447,14 @@
       </div>
       <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tighter animate-up delay-100 drop-shadow-[0_2px_15px_rgba(0,0,0,0.8)]">
         <span class="text-white">AI Generated</span><br>
-        <span class="text-stone-200">Instrumentals</span>
+        <span class="text-stone-300">Instrumentals</span>
       </h1>
       <p class="text-lg md:text-xl font-light text-stone-200 leading-relaxed mt-8 max-w-2xl mx-auto animate-up delay-300 drop-shadow-md">
         Original compositions crafted by AI, refined by human taste. Each track is <span class="text-white font-semibold">ready to license</span> — for videos, podcasts, games, and more.
       </p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mt-10 animate-up delay-500">
         <a href="#catalog" class="btn-primary text-sm font-medium text-white px-7 py-3 rounded-lg flex items-center gap-2 shadow-lg"><span class="iconify" data-icon="mdi:music-note"></span> Browse Catalog</a>
-        <a href="#contact" class="bg-white/10 backdrop-blur-sm text-sm font-medium text-white px-7 py-3 rounded-lg flex items-center gap-2 border border-white/20 hover:bg-white/20 transition-all duration-300"><span class="iconify" data-icon="mdi:message-outline"></span> Custom Request</a>
+        <a href="#contact" class="btn-ghost text-sm font-medium text-white px-7 py-3 rounded-lg flex items-center gap-2 transition-all duration-300"><span class="iconify" data-icon="mdi:message-outline"></span> Custom Request</a>
       </div>
       <div class="flex items-center justify-center gap-8 mt-14 animate-up delay-700">
         <div class="text-center"><p class="text-2xl font-bold text-white" id="statTotal">0</p><p class="text-[11px] text-stone-300 uppercase tracking-wider mt-1">Tracks</p></div>
@@ -475,18 +473,18 @@
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-14">
         <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">Collection</span>
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">Music Catalog</h2>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 text-white">Music Catalog</h2>
         <p class="text-stone-400 font-light mt-3 max-w-md mx-auto text-sm">Click any track to hear a preview, see details, and licensing options.</p>
       </div>
       <div class="flex flex-wrap items-center justify-center gap-2 mb-10" id="filterContainer">
-        <button class="filter-btn active text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="all">All</button>
-        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="refreshing">Refreshing</button>
-        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="ambient">Ambient</button>
-        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="electronic">Electronic</button>
-        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="orchestral">Orchestral</button>
-        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="lofi">Lo-Fi</button>
-        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="cinematic">Cinematic</button>
-        <button class="filter-btn text-sm text-stone-400 px-4 py-2 rounded-lg" data-filter="jazz">Jazz</button>
+        <button class="filter-btn active text-sm px-4 py-2 rounded-lg" data-filter="all">All</button>
+        <button class="filter-btn text-sm px-4 py-2 rounded-lg" data-filter="refreshing">Refreshing</button>
+        <button class="filter-btn text-sm px-4 py-2 rounded-lg" data-filter="ambient">Ambient</button>
+        <button class="filter-btn text-sm px-4 py-2 rounded-lg" data-filter="electronic">Electronic</button>
+        <button class="filter-btn text-sm px-4 py-2 rounded-lg" data-filter="orchestral">Orchestral</button>
+        <button class="filter-btn text-sm px-4 py-2 rounded-lg" data-filter="lofi">Lo-Fi</button>
+        <button class="filter-btn text-sm px-4 py-2 rounded-lg" data-filter="cinematic">Cinematic</button>
+        <button class="filter-btn text-sm px-4 py-2 rounded-lg" data-filter="jazz">Jazz</button>
       </div>
       <div class="flex items-center justify-between mb-8">
         <p class="text-xs text-stone-500" id="trackCount">Showing 0 tracks</p>
@@ -515,25 +513,25 @@
   <section id="about" class="relative z-10 px-6 py-24">
     <div class="max-w-6xl mx-auto grid md:grid-cols-12 gap-12 items-center">
       <div class="md:col-span-5">
-        <div class="relative rounded-2xl overflow-hidden aspect-[3/4]">
+        <div class="relative rounded-2xl overflow-hidden aspect-[3/4] border border-white/10">
           <img src="https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/Original%20Character%20(%20OC%20)%20References.jpg" alt="Creator" class="w-full h-full object-cover">
           <div class="absolute inset-0 bg-gradient-to-t from-[#231F1E] via-transparent to-transparent"></div>
           <div class="absolute bottom-5 left-5">
             <p class="text-[10px] font-medium tracking-widest uppercase text-stone-400">The Creator</p>
-            <p class="text-lg font-semibold text-stone-200 mt-0.5">ShinyuStellar</p>
+            <p class="text-lg font-semibold text-white mt-0.5">ShinyuStellar</p>
           </div>
         </div>
       </div>
       <div class="md:col-span-7">
         <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">About</span>
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">The Sound Behind<br>Each Track</h2>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 text-white">The Sound Behind<br>Each Track</h2>
         <p class="text-stone-400 font-light leading-relaxed mt-6 text-[15px]">I'm a producer who found a new creative partner in AI. Every track here started as a prompt — maybe a mood, maybe a genre blend, maybe a random thought at 3AM. The AI generates, I curate and refine.</p>
         <p class="text-stone-400 font-light leading-relaxed mt-4 text-[15px]">I work with multiple AI music models but always apply human taste to the final selection. Each track is mixed and mastered for professional use. Nothing here is generic or repetitive.</p>
         <div class="grid grid-cols-2 gap-3 mt-10">
-          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-500" data-icon="mdi:waveform"></span><p class="text-sm font-medium text-stone-200 mt-2.5">High Quality</p><p class="text-xs text-stone-500 mt-0.5">WAV + MP3 files</p></div>
-          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-500" data-icon="mdi:shield-check-outline"></span><p class="text-sm font-medium text-stone-200 mt-2.5">Clear License</p><p class="text-xs text-stone-500 mt-0.5">No copyright claims</p></div>
-          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-500" data-icon="mdi:clock-fast"></span><p class="text-sm font-medium text-stone-200 mt-2.5">Instant Delivery</p><p class="text-xs text-stone-500 mt-0.5">Download immediately</p></div>
-          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-500" data-icon="mdi:tune-variant"></span><p class="text-sm font-medium text-stone-200 mt-2.5">Custom Edits</p><p class="text-xs text-stone-500 mt-0.5">Adjustments available</p></div>
+          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-400" data-icon="mdi:waveform"></span><p class="text-sm font-medium text-white mt-2.5">High Quality</p><p class="text-xs text-stone-500 mt-0.5">WAV + MP3 files</p></div>
+          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-400" data-icon="mdi:shield-check-outline"></span><p class="text-sm font-medium text-white mt-2.5">Clear License</p><p class="text-xs text-stone-500 mt-0.5">No copyright claims</p></div>
+          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-400" data-icon="mdi:clock-fast"></span><p class="text-sm font-medium text-white mt-2.5">Instant Delivery</p><p class="text-xs text-stone-500 mt-0.5">Download immediately</p></div>
+          <div class="detail-box p-4 rounded-xl"><span class="iconify text-lg text-stone-400" data-icon="mdi:tune-variant"></span><p class="text-sm font-medium text-white mt-2.5">Custom Edits</p><p class="text-xs text-stone-500 mt-0.5">Adjustments available</p></div>
         </div>
       </div>
     </div>
@@ -545,45 +543,45 @@
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-14">
         <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">Licensing</span>
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">How It Works</h2>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 text-white">How It Works</h2>
         <p class="text-stone-400 font-light mt-3 max-w-md mx-auto text-sm">Simple licensing. No hidden fees.</p>
       </div>
       <div class="grid md:grid-cols-3 gap-5 items-stretch">
-        <div class="card-hover p-7 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex flex-col">
-          <span class="iconify text-2xl text-stone-500" data-icon="mdi:play-circle-outline"></span>
-          <h3 class="text-lg font-semibold text-stone-200 mt-4">Personal Use</h3>
+        <div class="card-hover p-7 rounded-2xl bg-[#2C2926] border border-white/[0.06] flex flex-col">
+          <span class="iconify text-2xl text-stone-400" data-icon="mdi:play-circle-outline"></span>
+          <h3 class="text-lg font-semibold text-white mt-4">Personal Use</h3>
           <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">For personal projects, non-monetized content.</p>
-          <div class="my-5"><span class="text-2xl font-bold text-stone-200">$10</span></div>
+          <div class="my-5"><span class="text-2xl font-bold text-white">$10</span></div>
           <ul class="space-y-2.5 mb-7 flex-1">
             <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>MP3 + WAV files</li>
             <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>44.1kHz / 16-bit</li>
             <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Personal projects only</li>
             <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Instant download</li>
           </ul>
-          <a href="#contact" class="btn-ghost block text-center text-xs font-medium text-stone-300 px-5 py-2.5 rounded-lg">Inquire</a>
+          <a href="#contact" class="btn-ghost block text-center text-xs font-medium px-5 py-2.5 rounded-lg">Inquire</a>
         </div>
         <div class="card-hover popular-card p-7 rounded-2xl flex flex-col relative">
           <div class="flex items-center justify-between">
-            <span class="iconify text-2xl" style="color:var(--accent)" data-icon="mdi:license"></span>
-            <span class="text-[9px] font-semibold tracking-widest uppercase px-2.5 py-0.5 rounded-full" style="color:var(--accent);background:var(--accent-glow);border:1px solid rgba(184,160,138,0.2)">Popular</span>
+            <span class="iconify text-2xl text-white" data-icon="mdi:license"></span>
+            <span class="text-[9px] font-semibold tracking-widest uppercase px-2.5 py-0.5 rounded-full bg-white/10 text-white border border-white/20">Popular</span>
           </div>
-          <h3 class="text-lg font-semibold text-stone-200 mt-4">Commercial License</h3>
-          <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">For monetized content, business use.</p>
-          <div class="my-5"><span class="text-2xl font-bold" style="color:var(--accent-light)">$20</span></div>
+          <h3 class="text-lg font-semibold text-white mt-4">Commercial License</h3>
+          <p class="text-xs text-stone-400 mt-1.5 leading-relaxed">For monetized content, business use.</p>
+          <div class="my-5"><span class="text-2xl font-bold text-white">$20</span></div>
           <ul class="space-y-2.5 mb-7 flex-1">
-            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>Everything in Personal</li>
-            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>48kHz / 24-bit</li>
-            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>YouTube, social media</li>
-            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>Podcasts, streams</li>
-            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify" style="color:var(--accent)" data-icon="mdi:check-circle"></span>License certificate</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify text-white" data-icon="mdi:check-circle"></span>Everything in Personal</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify text-white" data-icon="mdi:check-circle"></span>48kHz / 24-bit</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify text-white" data-icon="mdi:check-circle"></span>YouTube, social media</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify text-white" data-icon="mdi:check-circle"></span>Podcasts, streams</li>
+            <li class="flex items-center gap-2.5 text-xs text-stone-300"><span class="iconify text-white" data-icon="mdi:check-circle"></span>License certificate</li>
           </ul>
-          <a href="#contact" class="btn-primary block text-center text-xs font-medium text-white px-5 py-2.5 rounded-lg">Inquire</a>
+          <a href="#contact" class="btn-primary block text-center text-xs font-medium px-5 py-2.5 rounded-lg">Inquire</a>
         </div>
-        <div class="card-hover p-7 rounded-2xl bg-white/[0.02] border border-white/[0.05] flex flex-col">
-          <span class="iconify text-2xl text-stone-500" data-icon="mdi:crown-outline"></span>
-          <h3 class="text-lg font-semibold text-stone-200 mt-4">Exclusive Rights</h3>
+        <div class="card-hover p-7 rounded-2xl bg-[#2C2926] border border-white/[0.06] flex flex-col">
+          <span class="iconify text-2xl text-stone-400" data-icon="mdi:crown-outline"></span>
+          <h3 class="text-lg font-semibold text-white mt-4">Exclusive Rights</h3>
           <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">Full ownership, track removed from catalog.</p>
-          <div class="my-5"><span class="text-2xl font-bold text-stone-200">$50</span><span class="text-xs text-stone-500 ml-1">starting</span></div>
+          <div class="my-5"><span class="text-2xl font-bold text-white">$50</span><span class="text-xs text-stone-500 ml-1">starting</span></div>
           <ul class="space-y-2.5 mb-7 flex-1">
             <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Everything in Commercial</li>
             <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Full ownership</li>
@@ -591,7 +589,7 @@
             <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Custom edits</li>
             <li class="flex items-center gap-2.5 text-xs text-stone-400"><span class="iconify text-stone-500" data-icon="mdi:check-circle-outline"></span>Track removed from sale</li>
           </ul>
-          <a href="#contact" class="btn-ghost block text-center text-xs font-medium text-stone-300 px-5 py-2.5 rounded-lg">Request</a>
+          <a href="#contact" class="btn-ghost block text-center text-xs font-medium px-5 py-2.5 rounded-lg">Request</a>
         </div>
       </div>
     </div>
@@ -603,7 +601,7 @@
     <div class="max-w-2xl mx-auto">
       <div class="text-center mb-14">
         <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">FAQ</span>
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">Questions</h2>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 text-white">Questions</h2>
       </div>
       <div class="space-y-2.5" id="faqContainer"></div>
     </div>
@@ -615,33 +613,33 @@
     <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-12">
       <div>
         <span class="text-[11px] font-medium tracking-[0.25em] uppercase text-stone-500">Get in Touch</span>
-        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 bg-gradient-to-b from-stone-200 to-stone-500 bg-clip-text text-transparent">Need a Track?<br>Let's Talk.</h2>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mt-3 text-white">Need a Track?<br>Let's Talk.</h2>
         <p class="text-stone-400 font-light leading-relaxed mt-6 text-[15px]">Whether you need a specific mood, genre, or length — I can create it. Fill out the form or reach out directly on my socials. I'll get back to you within 24 hours.</p>
         <div class="space-y-4 mt-10">
           <div class="flex items-center gap-4">
             <div class="w-10 h-10 rounded-xl detail-box flex items-center justify-center flex-shrink-0"><span class="iconify text-lg text-stone-400" data-icon="mdi:email-outline"></span></div>
-            <div><p class="text-[10px] text-stone-500 uppercase tracking-wider">Email</p><p class="text-sm text-stone-200 mt-0.5">shinyustellar@gmail.com</p></div>
+            <div><p class="text-[10px] text-stone-500 uppercase tracking-wider">Email</p><p class="text-sm text-white mt-0.5">shinyustellar@gmail.com</p></div>
           </div>
           <div class="flex items-center gap-4">
             <div class="w-10 h-10 rounded-xl detail-box flex items-center justify-center flex-shrink-0"><span class="iconify text-lg text-stone-400" data-icon="mdi:clock-outline"></span></div>
-            <div><p class="text-[10px] text-stone-500 uppercase tracking-wider">Response Time</p><p class="text-sm text-stone-200 mt-0.5">Usually within 12-24 hours</p></div>
+            <div><p class="text-[10px] text-stone-500 uppercase tracking-wider">Response Time</p><p class="text-sm text-white mt-0.5">Usually within 12-24 hours</p></div>
           </div>
           <div class="flex items-start gap-4">
             <div class="w-10 h-10 rounded-xl detail-box flex items-center justify-center flex-shrink-0 mt-0.5"><span class="iconify text-lg text-stone-400" data-icon="mdi:share-variant-outline"></span></div>
             <div>
               <p class="text-[10px] text-stone-500 uppercase tracking-wider mb-2.5">Find Me On</p>
               <div class="flex items-center gap-2.5 flex-wrap">
-                <a href="https://www.youtube.com/@ShinyuStellar" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-[#FF0000]/10 border border-[#FF0000]/20 flex items-center justify-center cursor-pointer" title="YouTube"><span class="iconify text-lg text-[#FF0000]" data-icon="mdi:youtube"></span></a>
-                <a href="https://www.tiktok.com/@shinyu.stellar?_r=1&_t=ZS-98Sn4OMobbu" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-white/[0.04] border border-white/[0.08] flex items-center justify-center cursor-pointer" title="TikTok"><span class="iconify text-lg text-stone-100" data-icon="simple-icons:tiktok"></span></a>
-                <a href="https://www.instagram.com/shinyustellar?igsh=MXBic3I4ZWZmMm1ncg%3D%3D&utm_source=qr" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-[#E4405F]/10 border border-[#E4405F]/20 flex items-center justify-center cursor-pointer" title="Instagram"><span class="iconify text-lg text-[#E4405F]" data-icon="mdi:instagram"></span></a>
-                <a href="https://www.facebook.com/share/1Bt8vizHmB/?mibextid=wwXIfr" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-[#1877F2]/10 border border-[#1877F2]/20 flex items-center justify-center cursor-pointer" title="Facebook"><span class="iconify text-lg text-[#1877F2]" data-icon="mdi:facebook"></span></a>
+                <a href="https://www.youtube.com/@ShinyuStellar" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-white/5 border border-white/10 flex items-center justify-center cursor-pointer" title="YouTube"><span class="iconify text-lg text-red-500" data-icon="mdi:youtube"></span></a>
+                <a href="https://www.tiktok.com/@shinyu.stellar?_r=1&_t=ZS-98Sn4OMobbu" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-white/5 border border-white/10 flex items-center justify-center cursor-pointer" title="TikTok"><span class="iconify text-lg text-white" data-icon="simple-icons:tiktok"></span></a>
+                <a href="https://www.instagram.com/shinyustellar?igsh=MXBic3I4ZWZmMm1ncg%3D%3D&utm_source=qr" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-white/5 border border-white/10 flex items-center justify-center cursor-pointer" title="Instagram"><span class="iconify text-lg text-pink-500" data-icon="mdi:instagram"></span></a>
+                <a href="https://www.facebook.com/share/1Bt8vizHmB/?mibextid=wwXIfr" target="_blank" class="pay-icon w-[52px] h-8 rounded-md bg-white/5 border border-white/10 flex items-center justify-center cursor-pointer" title="Facebook"><span class="iconify text-lg text-blue-500" data-icon="mdi:facebook"></span></a>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div>
-        <form id="contactForm" class="p-7 rounded-2xl border border-white/[0.05]" style="background:linear-gradient(180deg,rgba(44,41,38,0.9),rgba(35,31,30,0.95))" novalidate>
+        <form id="contactForm" class="p-8 rounded-2xl border border-white/[0.08] bg-[#2C2926]" novalidate>
           <div>
             <label class="text-[10px] font-medium text-stone-400 uppercase tracking-wider">Your Name <span class="text-red-400/60">*</span></label>
             <input type="text" id="formName" placeholder="What should I call you?" class="form-input mt-1.5">
@@ -686,7 +684,7 @@
             <textarea id="formMessage" rows="4" placeholder="Tell me about your project, desired mood, length, etc..." class="form-textarea mt-1.5"></textarea>
             <p class="field-error-msg" id="messageError">Please write a message</p>
           </div>
-          <button type="submit" id="submitBtn" class="btn-primary w-full text-sm font-medium text-white px-5 py-3 rounded-lg flex items-center justify-center gap-2 mt-5">
+          <button type="submit" id="submitBtn" class="btn-primary w-full text-sm font-medium text-white px-5 py-3 rounded-lg flex items-center justify-center gap-2 mt-6">
             <span class="iconify" data-icon="mdi:send-variant-outline" id="submitIcon"></span>
             <span id="submitText">Send Message</span>
           </button>
@@ -699,15 +697,15 @@
   <footer class="relative z-10 px-6 py-10 border-t border-white/[0.04]">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
       <div class="flex items-center gap-2.5">
-        <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:linear-gradient(135deg,#5a4e42,#3a3228)"><span class="iconify text-white/70 text-xs" data-icon="mdi:waveform"></span></div>
+        <div class="w-7 h-7 rounded-md flex items-center justify-center bg-white/5 border border-white/10"><span class="iconify text-white/70 text-xs" data-icon="mdi:waveform"></span></div>
         <span class="text-xs font-medium text-stone-500">ShinyuStellar</span>
       </div>
       <div class="flex items-center gap-5">
-        <a href="#home" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">Home</a>
-        <a href="#catalog" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">Catalog</a>
-        <a href="#about" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">About</a>
-        <a href="#licensing" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">Licensing</a>
-        <a href="#contact" class="text-[11px] text-stone-600 hover:text-stone-300 transition-colors">Contact</a>
+        <a href="#home" class="text-[11px] text-stone-600 hover:text-white transition-colors">Home</a>
+        <a href="#catalog" class="text-[11px] text-stone-600 hover:text-white transition-colors">Catalog</a>
+        <a href="#about" class="text-[11px] text-stone-600 hover:text-white transition-colors">About</a>
+        <a href="#licensing" class="text-[11px] text-stone-600 hover:text-white transition-colors">Licensing</a>
+        <a href="#contact" class="text-[11px] text-stone-600 hover:text-white transition-colors">Contact</a>
       </div>
       <p class="text-[11px] text-stone-700 cursor-pointer select-none" id="footerCopyright">© 2026 ShinyuStellar</p>
     </div>
@@ -717,20 +715,25 @@
     <div class="modal-overlay absolute inset-0" onclick="closeModal()"></div>
     <div class="relative z-10 w-full h-full overflow-y-auto">
       <div class="max-w-5xl mx-auto px-6 py-12 min-h-screen flex items-start justify-center">
-        <div id="modalContent" class="w-full bg-[#2C2926] border border-white/[0.06] rounded-2xl overflow-hidden animate-scale relative"></div>
+        <div id="modalContent" class="w-full bg-[#2C2926] border border-white/[0.08] rounded-2xl overflow-hidden animate-scale relative"></div>
       </div>
     </div>
   </div>
 
   <div id="toastContainer" class="fixed bottom-6 right-6 z-[200] space-y-3"></div>
 
-  <button id="backToTop" class="fixed bottom-6 left-6 z-50 w-10 h-10 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-white/[0.07]" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <button id="backToTop" class="fixed bottom-6 left-6 z-50 w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-white/10" onclick="window.scrollTo({top:0,behavior:'smooth'})">
     <span class="iconify text-lg text-stone-400" data-icon="mdi:chevron-up"></span>
   </button>
 
   <script>
-    // EMAIL SOLUTION: Using FormSubmit.co to send emails directly to your inbox
+    // EMAIL SOLUTION: FormSubmit.co sends the form directly to your Gmail inbox
     var CONTACT_EMAIL = "shinyustellar@gmail.com"; 
+    
+    // PREMIUM EMAIL CUSTOMIZATION
+    // Change this link to any image you want to use as your profile picture in the email
+    var PFP_URL = "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/main/Original%20Character%20(%20OC%20)%20References.jpg";
+    var WEBSITE_URL = "https://shinyustellar.netlify.app/";
 
     var GH = "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/refs/heads/main/";
 
@@ -920,9 +923,9 @@
     function renderFAQs() {
       var c = document.getElementById('faqContainer');
       c.innerHTML = faqs.map(function(f, i) {
-        return '<div class="faq-item border border-white/[0.05] rounded-xl overflow-hidden">' +
+        return '<div class="faq-item border border-white/[0.06] rounded-xl overflow-hidden">' +
           '<button class="w-full flex items-center justify-between p-5 text-left" onclick="toggleFAQ(' + i + ')">' +
-          '<span class="text-sm font-medium text-stone-200 pr-4">' + f.q + '</span>' +
+          '<span class="text-sm font-medium text-white pr-4">' + f.q + '</span>' +
           '<span class="iconify text-stone-500 flex-shrink-0 transition-transform duration-300" data-icon="mdi:chevron-down" id="faqIcon' + i + '"></span>' +
           '</button>' +
           '<div class="hidden px-5 pb-5" id="faqAnswer' + i + '">' +
@@ -946,7 +949,7 @@
         return '<div class="notification-item' + (n.unread ? ' unread' : '') + '" onclick="dismissNotification(' + n.id + ')">' +
           '<div class="flex items-start gap-3">' +
           (n.unread ? '<div class="notification-dot mt-1.5"></div>' : '<div class="w-1.5 mt-1.5"></div>') +
-          '<div><p class="text-xs text-stone-200 leading-relaxed">' + n.text + '</p><p class="text-[10px] text-stone-500 mt-1">' + n.time + '</p></div>' +
+          '<div><p class="text-xs text-white leading-relaxed">' + n.text + '</p><p class="text-[10px] text-stone-500 mt-1">' + n.time + '</p></div>' +
           '</div></div>';
       }).join('');
       list.innerHTML = html;
@@ -1053,7 +1056,7 @@
       grid.innerHTML = filtered.map(function(t) {
         var statusClass = t.status === 'available' ? 'status-avail' : t.status === 'licensed' ? 'status-sold' : t.status === 'exclusive' ? 'status-exclusive' : 'status-reserved';
         var statusLabel = t.status.charAt(0).toUpperCase() + t.status.slice(1);
-        return '<div class="music-card card-hover rounded-2xl bg-white/[0.02] border border-white/[0.05] overflow-hidden cursor-pointer" data-id="' + t.id + '" onclick="openModal(' + t.id + ')">' +
+        return '<div class="music-card card-hover rounded-2xl overflow-hidden cursor-pointer" data-id="' + t.id + '" onclick="openModal(' + t.id + ')">' +
           '<div class="music-card-image-wrap aspect-square">' +
           '<img src="' + t.image + '" alt="' + t.title + '" loading="lazy" decoding="async" class="w-full h-full object-cover">' +
           '<div class="play-overlay"><div class="play-btn"><span class="iconify text-white text-xl" data-icon="mdi:play"></span></div></div>' +
@@ -1061,7 +1064,7 @@
           '<div class="absolute top-3 right-3 z-10"><span class="' + statusClass + ' text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full">' + statusLabel + '</span></div>' +
           '</div>' +
           '<div class="p-4 flex-1 flex flex-col">' +
-          '<h3 class="text-sm font-semibold text-stone-200 truncate">' + t.title + '</h3>' +
+          '<h3 class="text-sm font-semibold text-white truncate">' + t.title + '</h3>' +
           '<p class="text-[11px] text-stone-500 mt-1 capitalize">' + t.genre + '</p>' +
           '<div class="flex items-center gap-3 mt-3 pt-3 border-t border-white/[0.04]">' +
           '<span class="text-[10px] text-stone-500 flex items-center gap-1"><span class="iconify text-xs" data-icon="mdi:clock-outline"></span>' + t.duration + '</span>' +
@@ -1100,20 +1103,20 @@
         '<div class="absolute inset-0 bg-gradient-to-t from-[#2C2926] via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#2C2926]"></div></div>' +
         '<div class="p-8 md:p-10 flex flex-col">' +
         '<div class="flex items-center gap-2 mb-4"><span class="' + statusClass + ' text-[9px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full">' + statusLabel + '</span><span class="price-badge text-[10px] font-semibold px-2.5 py-1 rounded-full">$' + t.price + '</span></div>' +
-        '<h2 class="text-2xl md:text-3xl font-bold text-stone-100 tracking-tight">' + t.title + '</h2>' +
+        '<h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">' + t.title + '</h2>' +
         '<p class="text-xs text-stone-500 capitalize mt-1">' + t.genre + '</p>' +
         '<p class="text-sm text-stone-400 leading-relaxed mt-4">' + t.description + '</p>' +
         '<div class="grid grid-cols-2 gap-3 mt-6">' +
-        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Duration</p><p class="text-sm text-stone-200 mt-0.5">' + t.duration + '</p></div>' +
-        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">BPM</p><p class="text-sm text-stone-200 mt-0.5">' + t.bpm + '</p></div>' +
-        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Key</p><p class="text-sm text-stone-200 mt-0.5">' + t.key + '</p></div>' +
-        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Format</p><p class="text-sm text-stone-200 mt-0.5">' + t.format + '</p></div>' +
+        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Duration</p><p class="text-sm text-white mt-0.5">' + t.duration + '</p></div>' +
+        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">BPM</p><p class="text-sm text-white mt-0.5">' + t.bpm + '</p></div>' +
+        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Key</p><p class="text-sm text-white mt-0.5">' + t.key + '</p></div>' +
+        '<div class="detail-box p-3 rounded-lg"><p class="text-[9px] text-stone-500 uppercase tracking-wider">Format</p><p class="text-sm text-white mt-0.5">' + t.format + '</p></div>' +
         '</div>' +
         '<div class="flex flex-wrap gap-2 mt-5">' + t.tags.map(function(tag) { return '<span class="tag text-[10px] px-2.5 py-1 rounded-full">' + tag + '</span>'; }).join('') + '</div>' +
         '<div class="flex items-center gap-3 mt-8">' +
         '<button class="btn-primary flex-1 text-sm font-medium text-white px-5 py-3 rounded-lg flex items-center justify-center gap-2" onclick="playPreview(' + t.id + ')" id="playBtn' + t.id + '">' +
         '<span class="iconify" data-icon="mdi:play" id="playIcon' + t.id + '"></span><span id="playText' + t.id + '">Play Preview</span></button>' +
-        '<a href="#contact" class="btn-ghost text-sm font-medium text-stone-300 px-5 py-3 rounded-lg flex items-center justify-center gap-2" onclick="closeModal()"><span class="iconify" data-icon="mdi:message-outline"></span>Inquire</a>' +
+        '<a href="#contact" class="btn-ghost text-sm font-medium px-5 py-3 rounded-lg flex items-center justify-center gap-2" onclick="closeModal()"><span class="iconify" data-icon="mdi:message-outline"></span>Inquire</a>' +
         '</div>' +
         '<div class="hidden items-center gap-3 mt-4" id="eqContainer' + t.id + '">' +
         '<div class="equalizer"><div class="equalizer-bar"></div><div class="equalizer-bar"></div><div class="equalizer-bar"></div></div>' +
@@ -1168,7 +1171,7 @@
     function showToast(msg, type) {
       var c = document.getElementById('toastContainer');
       var t = document.createElement('div');
-      t.className = 'toast px-5 py-3 rounded-lg text-sm font-medium flex items-center gap-2 ' + (type === 'error' ? 'bg-red-500/15 border border-red-500/20 text-red-300' : 'bg-white/10 border border-white/10 text-stone-200');
+      t.className = 'toast px-5 py-3 rounded-lg text-sm font-medium flex items-center gap-2 ' + (type === 'error' ? 'bg-red-500/10 border border-red-500/20 text-red-400' : 'bg-white/10 border border-white/20 text-white');
       t.innerHTML = '<span class="iconify" data-icon="' + (type === 'error' ? 'mdi:alert-circle-outline' : 'mdi:check-circle-outline') + '"></span>' + msg;
       c.appendChild(t);
       setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 3500);
@@ -1200,7 +1203,7 @@
       document.getElementById('clearTrackBtn').classList.remove('visible');
     }
 
-    // EMAIL SOLUTION: Custom formatted email so it looks beautiful in your inbox
+    // PREMIUM HTML EMAIL TEMPLATE
     document.getElementById('contactForm').addEventListener('submit', function(e) {
       e.preventDefault();
       var name = document.getElementById('formName');
@@ -1229,23 +1232,73 @@
       icon.classList.add('spin');
       text.textContent = 'Sending...';
 
-      // Constructing a beautiful plain text message for the email
-      var emailContent = "You have received a new inquiry from your website.\n\n" +
-                         "Name: " + name.value.trim() + "\n" +
-                         "Email: " + email.value.trim() + "\n";
-      if (track.value) {
-        emailContent += "Track of Interest: " + track.value + "\n";
-      }
-      emailContent += "Subject: " + subject.value + "\n\n" +
-                      "Message:\n" + message.value.trim();
+      var emailHtml = `
+      <div style="background-color:#f4f4f5; padding: 40px 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e4e4e7; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+          
+          <!-- Banner Header -->
+          <div style="background: linear-gradient(135deg, #231F1E 0%, #2C2926 100%); padding: 40px 20px; text-align: center; border-bottom: 4px solid #b8a08a;">
+            <img src="${PFP_URL}" alt="Profile" style="width: 90px; height: 90px; border-radius: 50%; border: 3px solid #b8a08a; margin-bottom: 15px; object-fit: cover;">
+            <h1 style="color: #ffffff; font-size: 24px; margin: 0; font-weight: 600; letter-spacing: -0.5px;">ShinyuStellar</h1>
+            <p style="color: #b8a08a; font-size: 14px; margin: 5px 0 0 0; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">New Business Inquiry</p>
+          </div>
+
+          <!-- Content Body -->
+          <div style="padding: 40px 30px;">
+            
+            <!-- Sender Details -->
+            <div style="background-color: #fafaf9; border-radius: 12px; padding: 25px; margin-bottom: 30px; border: 1px solid #e7e5e4;">
+              <table style="width: 100%; border-collapse: collapse; color: #44403c; font-size: 15px;">
+                <tr>
+                  <td style="padding: 8px 0; width: 120px; color: #78716c; font-weight: 600;">Name:</td>
+                  <td style="padding: 8px 0; color: #1c1917; font-weight: 500;">${name.value.trim()}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #78716c; font-weight: 600;">Email:</td>
+                  <td style="padding: 8px 0; color: #1c1917; font-weight: 500;">${email.value.trim()}</td>
+                </tr>
+                ${track.value ? `
+                <tr>
+                  <td style="padding: 8px 0; color: #78716c; font-weight: 600;">Track:</td>
+                  <td style="padding: 8px 0; color: #1c1917; font-weight: 500;">${track.value}</td>
+                </tr>` : ``}
+                <tr>
+                  <td style="padding: 8px 0; color: #78716c; font-weight: 600;">Subject:</td>
+                  <td style="padding: 8px 0; color: #1c1917; font-weight: 500;">${subject.value}</td>
+                </tr>
+              </table>
+            </div>
+
+            <!-- Message Note Design -->
+            <div style="border-left: 4px solid #b8a08a; padding: 20px 25px; background-color: #fafaf9; border-radius: 0 12px 12px 0; margin-bottom: 30px;">
+              <p style="margin: 0; color: #44403c; font-size: 15px; line-height: 1.6; font-style: italic;">
+                ${message.value.trim().replace(/\n/g, '<br>')}
+              </p>
+            </div>
+
+            <p style="color: #a8a29e; font-size: 13px; text-align: center; margin: 0;">
+              This message was sent from your website contact form.
+            </p>
+          </div>
+
+          <!-- Footer -->
+          <div style="background-color: #fafaf9; padding: 20px 30px; text-align: center; border-top: 1px solid #e7e5e4;">
+            <p style="color: #a8a29e; font-size: 12px; margin: 0;">
+              &copy; 2026 ShinyuStellar | <a href="${WEBSITE_URL}" style="color: #b8a08a; text-decoration: none; font-weight: 500;">Visit Website</a>
+            </p>
+          </div>
+
+        </div>
+      </div>
+      `;
 
       var formData = {
         name: name.value.trim(),
-        email: email.value.trim(), // This acts as the sender's email for Reply-To
+        email: email.value.trim(),
         _replyto: email.value.trim(),
-        message: emailContent, // Send the custom formatted string as the message
-        _subject: "New Inquiry: " + subject.value + (track.value ? " (" + track.value + ")" : ""),
-        _template: "box", // "box" template looks much cleaner than "table"
+        message: emailHtml,
+        _subject: "New Business Inquiry: " + subject.value + (track.value ? " (" + track.value + ")" : ""),
+        _template: "box",
         _captcha: "false"
       };
 
@@ -1268,7 +1321,6 @@
         showToast('Could not send message. Try again.', 'error');
       })
       .finally(function() {
-        // Reset button state completely so it NEVER gets stuck loading
         btn.disabled = false;
         icon.setAttribute('data-icon', 'mdi:send-variant-outline');
         icon.classList.remove('spin');
@@ -1293,7 +1345,7 @@
       body.innerHTML = tracks.map(function(t) {
         return '<div class="admin-music-row" id="adminRow' + t.id + '">' +
           '<img src="' + t.image + '" alt="" decoding="async" class="admin-music-img">' +
-          '<div class="admin-music-info"><p class="text-sm font-medium text-stone-200 truncate">' + t.title + '</p><p class="text-[10px] text-stone-500 capitalize">' + t.genre + ' · $' + t.price + '</p></div>' +
+          '<div class="admin-music-info"><p class="text-sm font-medium text-white truncate">' + t.title + '</p><p class="text-[10px] text-stone-500 capitalize">' + t.genre + ' · $' + t.price + '</p></div>' +
           '<div class="admin-select-wrap"><select class="admin-status-select" data-track-id="' + t.id + '" onchange="changeStatus(' + t.id + ', this.value)">' +
           '<option value="available"' + (t.status === 'available' ? ' selected' : '') + '>Available</option>' +
           '<option value="licensed"' + (t.status === 'licensed' ? ' selected' : '') + '>Licensed</option>' +
