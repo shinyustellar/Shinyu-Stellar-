@@ -1194,13 +1194,14 @@
   </button>
 
   <script>
-    // --- ANTI-INSPECT & RIGHT-CLICK BLOCKER ---
-    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
+        // --- STRICT ANTI-INSPECT & RIGHT-CLICK BLOCKER ---
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; }); // Blocks Right-Click
     document.addEventListener('keydown', function(e) {
-      if (e.key === 123) { e.preventDefault(); return false; } // F12
-      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
-      if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; } // View Source
+      if (e.key === 123) { e.preventDefault(); return false; } // Blocks F12
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; } // Blocks Ctrl+Shift+I/J/C
+      if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; } // Blocks Ctrl+U
     });
+    document.addEventListener('copy', function(e) { e.preventDefault(); return false; }); // Blocks Copying
 
     var CONTACT_EMAIL = "shinyustellar@gmail.com"; 
     var GH = "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/refs/heads/main/";
