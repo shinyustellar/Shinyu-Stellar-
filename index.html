@@ -324,7 +324,7 @@
     .account-item .iconify { font-size: 16px; }
   </style>
 </head>
-<body class="overflow-x-hidden" oncontextmenu="return false">
+<body class="overflow-x-hidden">
 
   <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
     <div class="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full blur-3xl animate-breathe" style="background:radial-gradient(circle,rgba(212, 180, 131, 0.05) 0%,transparent 70%)"></div>
@@ -459,18 +459,18 @@
 
   <!-- IMAGE CROPPER MODAL -->
   <div class="admin-overlay" id="cropperModal" style="z-index: 350;">
-    <div class="admin-panel slide-down" style="max-width: 800px;">
+    <div class="admin-panel slide-down" style="max-width: 800px; width: 100%;">
       <div class="admin-header">
         <div class="w-full text-center">
           <h3 class="text-lg font-semibold text-stone-200">Crop Image</h3>
-          <p class="text-[11px] text-stone-500 mt-0.5">Adjust the image to fit perfectly.</p>
+          <p class="text-[11px] text-stone-500 mt-0.5">Drag to move, pinch/drag corners to resize. Click Apply when ready.</p>
         </div>
         <button onclick="closeCropper()" class="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center hover:bg-white/[0.07] transition-colors absolute right-4 top-4">
           <span class="iconify text-lg text-stone-400" data-icon="mdi:close"></span>
         </button>
       </div>
       <div class="admin-body p-4">
-        <div class="max-h-[60vh] overflow-hidden bg-stone-900 rounded-lg flex items-center justify-center">
+        <div class="max-h-[50vh] sm:max-h-[60vh] overflow-hidden bg-stone-900 rounded-lg flex items-center justify-center">
           <img id="cropperImage" src="" alt="Crop preview" class="max-w-full" style="display: block; max-width: 100%;">
         </div>
       </div>
@@ -943,7 +943,7 @@
       <div class="relative w-full h-40 sm:h-56 md:h-64 rounded-2xl overflow-hidden mb-16 bg-stone-800 group">
         <img id="profileBanner" src="" alt="Profile Banner" class="w-full h-full object-cover hidden">
         <div class="absolute inset-0 bg-gradient-to-t from-[#1A1817] to-transparent opacity-60 pointer-events-none"></div>
-        <button onclick="triggerUpload('banner')" class="profile-edit-btn absolute bottom-4 right-4 btn-ghost text-xs font-medium text-white px-3 py-2 rounded-lg flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+        <button onclick="triggerUpload('banner')" class="profile-edit-btn absolute bottom-4 right-4 btn-ghost text-xs font-medium text-white px-3 py-2 rounded-lg flex items-center gap-2 z-10">
           <span class="iconify" data-icon="mdi:image-edit-outline"></span> Edit Banner
         </button>
       </div>
@@ -1194,14 +1194,14 @@
   </button>
 
   <script>
-        // --- STRICT ANTI-INSPECT & RIGHT-CLICK BLOCKER ---
-    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; }); // Blocks Right-Click
+    // --- STRICT ANTI-INSPECT & RIGHT-CLICK BLOCKER ---
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
     document.addEventListener('keydown', function(e) {
-      if (e.key === 123) { e.preventDefault(); return false; } // Blocks F12
-      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; } // Blocks Ctrl+Shift+I/J/C
-      if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; } // Blocks Ctrl+U
+      if (e.key === 123) { e.preventDefault(); return false; }
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
+      if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
     });
-    document.addEventListener('copy', function(e) { e.preventDefault(); return false; }); // Blocks Copying
+    document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
 
     var CONTACT_EMAIL = "shinyustellar@gmail.com"; 
     var GH = "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/refs/heads/main/";
@@ -1601,7 +1601,7 @@
       }
     }
 
-    // --- IMAGE CROPPER LOGIC ---
+    // --- IMAGE CROPPER LOGIC (FREE SIZE, MANUAL APPLY) ---
     var cropper;
     var currentUploadType;
     function triggerUpload(type) {
@@ -1625,11 +1625,21 @@
           var img = document.getElementById('cropperImage');
           document.getElementById('cropperModal').classList.add('active');
           if (cropper) cropper.destroy();
+          
           img.onload = function() {
             cropper = new Cropper(img, {
-              aspectRatio: type === 'picture' ? 1 / 1 : 16 / 9,
-              viewMode: 1,
-              background: false
+              aspectRatio: NaN, // Allows free-size cropping
+              viewMode: 1,      // Restricts crop box to not exceed canvas
+              autoCropArea: 1,  // Fills the image initially
+              movable: true,
+              zoomable: true,
+              rotatable: false,
+              scalable: false,
+              background: false,
+              responsive: true,
+              checkOrientation: false, // Improves mobile performance
+              cropBoxMovable: true,
+              cropBoxResizable: true
             });
           };
           img.src = event.target.result;
@@ -1723,7 +1733,7 @@
             var t = tracks.find(function(tr) { return tr.id === id; });
             if (!t) return '';
             return '<div class="related-track-card cursor-pointer" onclick="openModal(' + t.id + ')">' +
-              '<div class="aspect-square rounded-lg overflow-hidden mb-2 bg-stone-800"><img src="' + t.image + '" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"></div>' +
+              '<div class="aspect-square rounded-lg overflow-hidden mb-2 bg-stone-800"><img src="' + t.image + '" style="opacity:0; transition: opacity 0.3s ease;" onload="this.style.opacity=1" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"></div>' +
               '<h4 class="text-xs font-medium text-stone-300 truncate transition-colors">' + t.title + '</h4>' +
               '</div>';
           }).join('');
@@ -1764,7 +1774,7 @@
       } else {
         likedGrid.innerHTML = likedTracks.map(function(t) {
           return '<div class="related-track-card cursor-pointer" onclick="openModal(' + t.id + ')">' +
-            '<div class="aspect-square rounded-lg overflow-hidden mb-2 bg-stone-800"><img src="' + t.image + '" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"></div>' +
+            '<div class="aspect-square rounded-lg overflow-hidden mb-2 bg-stone-800"><img src="' + t.image + '" style="opacity:0; transition: opacity 0.3s ease;" onload="this.style.opacity=1" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"></div>' +
             '<h4 class="text-xs font-medium text-stone-300 truncate transition-colors">' + t.title + '</h4>' +
             '</div>';
         }).join('');
@@ -2061,7 +2071,7 @@
 
           return '<div class="music-card card-hover cursor-pointer" data-id="' + t.id + '" onclick="openModal(' + t.id + ')">' +
             '<div class="music-card-image-wrap aspect-square">' +
-            '<img src="' + t.image + '" alt="' + t.title + '" loading="lazy" decoding="async" class="w-full h-full object-cover">' +
+            '<img src="' + t.image + '" alt="' + t.title + '" loading="lazy" decoding="async" class="w-full h-full object-cover" style="opacity:0; transition: opacity 0.3s ease;" onload="this.style.opacity=1">' +
             '<div class="play-overlay"></div>' +
             '<button class="heart-btn ' + (isFav ? 'liked' : '') + '" data-track-id="' + t.id + '" onclick="event.stopPropagation(); toggleFavorite(' + t.id + ')" title="Add to Liked">' +
               '<span class="iconify text-base" data-icon="' + (isFav ? 'mdi:heart' : 'mdi:heart-outline') + '"></span>' +
