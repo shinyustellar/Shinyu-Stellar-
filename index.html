@@ -469,10 +469,8 @@
           <span class="iconify text-lg text-stone-400" data-icon="mdi:close"></span>
         </button>
       </div>
-      <div class="admin-body p-4">
-        <div class="max-h-[50vh] sm:max-h-[60vh] overflow-hidden bg-stone-900 rounded-lg flex items-center justify-center">
-          <img id="cropperImage" src="" alt="Crop preview" class="max-w-full" style="display: block; max-width: 100%;">
-        </div>
+      <div class="p-4" style="height: 60vh; max-height: 60vh; overflow: hidden; background: #1f1c1b; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">
+        <img id="cropperImage" src="" alt="Crop preview" style="max-width: 100%; max-height: 100%; display: block; opacity: 1;">
       </div>
       <div class="p-4 flex justify-end gap-2 border-t border-white/5">
         <button onclick="closeCropper()" class="btn-ghost text-xs font-medium text-stone-300 px-4 py-2 rounded-lg">Cancel</button>
@@ -1201,7 +1199,6 @@
       if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) { e.preventDefault(); return false; }
       if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
     });
-    document.addEventListener('copy', function(e) { e.preventDefault(); return false; });
 
     var CONTACT_EMAIL = "shinyustellar@gmail.com"; 
     var GH = "https://raw.githubusercontent.com/mdaniealshamsuddin07-boop/my-musicc/refs/heads/main/";
@@ -1624,25 +1621,33 @@
         reader.onload = function(event) {
           var img = document.getElementById('cropperImage');
           document.getElementById('cropperModal').classList.add('active');
-          if (cropper) cropper.destroy();
           
+          if (cropper) {
+            cropper.destroy();
+            cropper = null;
+          }
+          
+          img.src = event.target.result;
+          
+          // Ensure image is fully loaded before initializing cropper
           img.onload = function() {
             cropper = new Cropper(img, {
               aspectRatio: NaN, // Allows free-size cropping
-              viewMode: 1,      // Restricts crop box to not exceed canvas
-              autoCropArea: 1,  // Fills the image initially
+              viewMode: 0,      // Allows moving outside the image slightly, fixes mobile bugs
+              autoCropArea: 0.8,
               movable: true,
               zoomable: true,
               rotatable: false,
               scalable: false,
-              background: false,
+              background: true,
               responsive: true,
-              checkOrientation: false, // Improves mobile performance
+              checkOrientation: true,
               cropBoxMovable: true,
-              cropBoxResizable: true
+              cropBoxResizable: true,
+              minContainerWidth: 200,
+              minContainerHeight: 200
             });
           };
-          img.src = event.target.result;
         };
         reader.readAsDataURL(file);
       };
